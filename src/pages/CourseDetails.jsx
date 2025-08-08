@@ -23,7 +23,7 @@ const CourseDetails = () => {
   const fetchCourseDetailsForLearner = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/courses/fetch/course-user-id?cid=${id}&uid=${userId}`,
+        `https://lms-backend-ol4a.onrender.com/courses/fetch/course-user-id?cid=${id}&uid=${userId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCourseDetails(response.data.data);
@@ -36,7 +36,7 @@ const CourseDetails = () => {
   const fetchCourseDetails = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/courses/fetch/course-id?courseId=${id}`
+        `https://lms-backend-ol4a.onrender.com/courses/fetch/course-id?courseId=${id}`
       );
       setCourseDetails(response.data.data);
     } catch (error) {
@@ -52,7 +52,7 @@ const CourseDetails = () => {
         type: courseDetails.type,
         amount: 0,
       };
-      await axios.post('http://localhost:8080/enrollment/enroll', data, {
+      await axios.post('https://lms-backend-ol4a.onrender.com/enrollment/enroll', data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Enrolled successfully!');
