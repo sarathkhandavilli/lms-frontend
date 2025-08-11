@@ -154,16 +154,12 @@ const HomePage = () => {
       {/* Course List */}
       <div className="px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {courses.length === 0 ? (
-            <div className="col-span-full text-center py-6">
-              <p className="text-xl font-semibold text-gray-500">
-                {loading ? (
-                  "Fetching Courses..."
-                ): courses.length === 0 (
-                  "No courses present in this category. Please try another category or search for courses."
-                )}
-              </p>
-            </div>
+          {loading ? (
+            <p className="text-xl font-semibold text-gray-500">Fetching Courses...</p>
+          ) : courses.length === 0 ? (
+            <p className="text-xl font-semibold text-gray-500">
+              No courses present in this category. Please try another category or search for courses.
+            </p>
           ) : (
             courses.map((course) => (
               <CourseCard
