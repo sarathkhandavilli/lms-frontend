@@ -14,6 +14,7 @@ const HomePage = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState('');
   const [category, setCategory] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const assignCategory = (id) => {
     setCategory(id);
@@ -24,15 +25,19 @@ const HomePage = () => {
   };
 
   const fetchAllcourses = async () => {
-    try {
-      const response = await axios.get(
-        'http://localhost:8080/courses/fetch/status-wise?status=active'
-      );
-      setCourses(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  setLoading(true);
+  try {
+    const response = await axios.get(
+      'http://localhost:8080/courses/fetch/status-wise?status=active'
+    );
+    setCourses(response.data.data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchAllcourses();
@@ -69,6 +74,9 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchCategoryCourses = async () => {
+
+      setLoading(true);
+
       if (category !== 0) {
         try {
           const response = await axios.get(
@@ -79,6 +87,8 @@ const HomePage = () => {
         } catch (error) {
           setCourses([]);
           console.log(error);
+        } finally {
+          setLoading(false);
         }
       } else {
         fetchAllcourses();
@@ -147,7 +157,11 @@ const HomePage = () => {
           {courses.length === 0 ? (
             <div className="col-span-full text-center py-6">
               <p className="text-xl font-semibold text-gray-500">
-                No courses present in this category. Please try another category or search for courses.
+                {loading ? (
+                  "Fetching Courses..."
+                ): courses.length === 0 (
+                  "No courses present in this category. Please try another category or search for courses."
+                )}
               </p>
             </div>
           ) : (
