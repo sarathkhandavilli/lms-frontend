@@ -36,7 +36,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this mentor?')) return;
 
     try {
-      await axios.delete(`http://localhost:8080/user/mentor/delete?mentorId=${mentorId}`, {
+      await axios.delete(`https://lms-backend-ol4a.onrender.com/user/mentor/delete?mentorId=${mentorId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,7 +51,7 @@ const AdminDashboard = () => {
 
   const handleDeleteCategory = async (categoryId) => {
     try {
-      await axios.delete(`http://localhost:8080/category/delete?categoryId=${categoryId}`, {
+      await axios.delete(`https://lms-backend-ol4a.onrender.com/category/delete?categoryId=${categoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
   const showEnrollments = async () => {
     setView('enrollments');
     try {
-      const response = await axios.get(`http://localhost:8080/enrollment/fetch/all`, {
+      const response = await axios.get(`https://lms-backend-ol4a.onrender.com/enrollment/fetch/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +82,7 @@ const AdminDashboard = () => {
     setView(fetchRole === 'LEARNER' ? 'learners' : 'mentors');
 
     try {
-      const response = await axios.get(`http://localhost:8080/user/fetch/role-wise?role=${fetchRole}`, {
+      const response = await axios.get(`https://lms-backend-ol4a.onrender.com/user/fetch/role-wise?role=${fetchRole}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -100,7 +100,7 @@ const AdminDashboard = () => {
   const fetchCategories = async () => {
     setView('categories');
     try {
-      const response = await axios.get('http://localhost:8080/category/fetch/all?status=active');
+      const response = await axios.get('https://lms-backend-ol4a.onrender.com/category/fetch/all?status=active');
       setCategories(response.data.data);
     } catch (error) {
       console.log(error);

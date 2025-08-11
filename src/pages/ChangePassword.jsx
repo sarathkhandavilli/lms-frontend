@@ -46,7 +46,7 @@ const ChangePassword = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/forgotpassword/changePassword/${email}`,
+        `https://lms-backend-ol4a.onrender.com/forgotpassword/changePassword/${email}`,
         passwords
       );
 

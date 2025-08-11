@@ -27,7 +27,7 @@ const OtpVerification = () => {
     try {
       // Send OTP and email to the API for verification
       const response = await axios.post(
-        `http://localhost:8080/forgotpassword/verifyOtp/${otp}/${email}`
+        `https://lms-backend-ol4a.onrender.com/forgotpassword/verifyOtp/${otp}/${email}`
       );
       
       if (response.status === 200) {

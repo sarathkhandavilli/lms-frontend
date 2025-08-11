@@ -30,7 +30,7 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
       if (categoryId) {
         // Update
         await axios.put(
-          'http://localhost:8080/category/update',
+          'https://lms-backend-ol4a.onrender.com/category/update',
           { id: parseInt(categoryId), ...formData },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -38,7 +38,7 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
       } else {
         // Create
         await axios.post(
-          'http://localhost:8080/category/add',
+          'https://lms-backend-ol4a.onrender.com/category/add',
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
