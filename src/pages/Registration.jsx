@@ -31,7 +31,7 @@ const Registration = () => {
     e.preventDefault();
 
     try {
-      await axios.post('https://lms-backend-ol4a.onrender.comuser/register', formData, {
+      await axios.post('http://localhost:8080/user/register', formData, {
         headers: {
           'Content-Type': 'application/json',
         },

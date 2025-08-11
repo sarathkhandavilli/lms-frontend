@@ -36,7 +36,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this mentor?')) return;
 
     try {
-      await axios.delete(`https://lms-backend-ol4a.onrender.comuser/mentor/delete?mentorId=${mentorId}`, {
+      await axios.delete(`http://localhost:8080/user/mentor/delete?mentorId=${mentorId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,7 +51,7 @@ const AdminDashboard = () => {
 
   const handleDeleteCategory = async (categoryId) => {
     try {
-      await axios.delete(`https://lms-backend-ol4a.onrender.comcategory/delete?categoryId=${categoryId}`, {
+      await axios.delete(`http://localhost:8080/category/delete?categoryId=${categoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
   const showEnrollments = async () => {
     setView('enrollments');
     try {
-      const response = await axios.get(`https://lms-backend-ol4a.onrender.comenrollment/fetch/all`, {
+      const response = await axios.get(`http://localhost:8080/enrollment/fetch/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +82,7 @@ const AdminDashboard = () => {
     setView(fetchRole === 'LEARNER' ? 'learners' : 'mentors');
 
     try {
-      const response = await axios.get(`https://lms-backend-ol4a.onrender.comuser/fetch/role-wise?role=${fetchRole}`, {
+      const response = await axios.get(`http://localhost:8080/user/fetch/role-wise?role=${fetchRole}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -100,7 +100,7 @@ const AdminDashboard = () => {
   const fetchCategories = async () => {
     setView('categories');
     try {
-      const response = await axios.get('https://lms-backend-ol4a.onrender.comcategory/fetch/all?status=active');
+      const response = await axios.get('http://localhost:8080/category/fetch/all?status=active');
       setCategories(response.data.data);
     } catch (error) {
       console.log(error);
@@ -212,19 +212,26 @@ const AdminDashboard = () => {
                   <h2 className="font-medium text-lg truncate">
                     {mentor.firstName} {mentor.lastName}
                   </h2>
-                  <p className="text-sm text-gray-600 truncate">{mentor.emailId}</p>
-                  <p className="text-sm text-gray-600">Phone: {mentor.phoneNo}</p>
-                  <p className="mt-2 text-sm">
-                    <strong>Age:</strong> {mentor.mentorDetail?.age} <br />
-                    <strong>Experience:</strong> {mentor.mentorDetail?.experience} yrs
-                  </p>
-                  <p className="text-sm">
-                    <strong>Qualification:</strong> {mentor.mentorDetail?.qualification}
-                  </p>
-                  <p className="text-sm">
-                    <strong>Profession:</strong> {mentor.mentorDetail?.profession}
-                  </p>
 
+                  {!mentor.mentorDetail || mentor.mentorDetail.id === 0 ? (
+                    <p>He hasn't uploaded details</p>
+                  ) : (
+                    <>
+                      <p className="text-sm text-gray-600 truncate">{mentor.emailId}</p>
+                      <p className="text-sm text-gray-600">Phone: {mentor.phoneNo}</p>
+                      <p className="mt-2 text-sm">
+                        <strong>Age:</strong> {mentor.mentorDetail.age} <br />
+                        <strong>Experience:</strong> {mentor.mentorDetail.experience} yrs
+                      </p>
+                      <p className="text-sm">
+                        <strong>Qualification:</strong> {mentor.mentorDetail.qualification}
+                      </p>
+                      <p className="text-sm">
+                        <strong>Profession:</strong> {mentor.mentorDetail.profession}
+                      </p>
+                    </>
+                  )}
+              
                   <div className="flex gap-2 mt-4 flex-wrap">
                     <button
                       className="bg-black border px-3 py-1 rounded text-white hover:bg-zinc-800 text-sm"

@@ -25,7 +25,7 @@ const AddMentorDetails = () => {
     const fetchMentorFullProfile = async () => {
       try {
         const response = await axios.get(
-          `https://lms-backend-ol4a.onrender.comuser/fetch/mentor-id?mentorId=${mentorId}`,
+          `http://localhost:8080/user/fetch/mentor-id?mentorId=${mentorId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -79,7 +79,7 @@ const AddMentorDetails = () => {
 
     try {
       const response = await axios.post(
-        'https://lms-backend-ol4a.onrender.comuser/mentordetail/add',
+        'http://localhost:8080/user/mentordetail/add',
         form,
         {
           headers: {

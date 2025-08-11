@@ -24,8 +24,9 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://lms-backend-ol4a.onrender.comuser/login', form);
+      const response = await axios.post('http://localhost:8080/user/login', form);
       const { token, role, userId, firstName, lastName } = response.data.data;
+
 
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
@@ -43,8 +44,19 @@ const Login = () => {
         navigate('/learner', { state: { learnerId: userId } });
       }
     } catch (error) {
+
+      const status = error.response.status ;
+
+      if (status === 403) {
+        toast.error("user is inactive");
+      } else if ( status === 404) {
+        toast.error("user with this mail is not registered!")
+      } else if ( status === 401) {
+        toast.error("incorrect password")
+      } else {
+        toast.error("something went wrong");
+      }
       console.error(error);
-      toast('Invalid credentials');
     }
   };
 

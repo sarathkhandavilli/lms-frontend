@@ -31,7 +31,7 @@ const Payment = () => {
     e.preventDefault();
 
     try {
-      await axios.post('https://lms-backend-ol4a.onrender.comenrollment/enroll', formData, {
+      await axios.post('http://localhost:8080/enrollment/enroll', formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

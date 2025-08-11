@@ -26,7 +26,7 @@ const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
     };
 
     try {
-      await axios.post('https://lms-backend-ol4a.onrender.comcourses/section/topic/add', payload, {
+      await axios.post('http://localhost:8080/courses/section/topic/add', payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'

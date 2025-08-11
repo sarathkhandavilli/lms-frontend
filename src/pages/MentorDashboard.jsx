@@ -29,7 +29,7 @@ const MentorDashboard = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`https://lms-backend-ol4a.onrender.comcourses/delete?courseId=${courseId}&mentorId=${mentorId}`, {
+      await axios.delete(`http://localhost:8080/courses/delete?courseId=${courseId}&mentorId=${mentorId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Course deleted successfully');
@@ -44,7 +44,7 @@ const MentorDashboard = () => {
   const fetchMentorDashboard = async () => {
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.comcourses/mentor/dashboard?mentorId=${mentorId}`,
+        `http://localhost:8080/courses/mentor/dashboard?mentorId=${mentorId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -59,7 +59,7 @@ const MentorDashboard = () => {
     setView('courses');
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.comcourses/fetch/mentor-wise?mentorId=${mentorId}&status=ACTIVE`,
+        `http://localhost:8080/courses/fetch/mentor-wise?mentorId=${mentorId}&status=ACTIVE`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -75,7 +75,7 @@ const MentorDashboard = () => {
     setView('enrollments');
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.comenrollment/fetch/mentor-wise?mentorId=${mentorId}`,
+        `http://localhost:8080/enrollment/fetch/mentor-wise?mentorId=${mentorId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
