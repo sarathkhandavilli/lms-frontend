@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import ProfileAvatar from './ProfileAvatar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -140,8 +143,12 @@ const Navbar = () => {
                     lastName={lastName}
                     profilePic={mentorImage}
                   />
-                  <div className="hidden md:block text-left">
-                    <p className="text-sm font-medium">{`${firstName} ${lastName}`}</p>
+                 <div className="hidden md:block text-left">
+                    {firstName === '' && lastName === '' ? (
+                      <p className="text-sm font-medium">Admin</p>
+                    ) : (
+                      <p className="text-sm font-medium">{`${firstName} ${lastName}`}</p>
+                    )}
                     <p className="text-xs text-gray-500 capitalize">{role}</p>
                   </div>
                 </button>
@@ -159,6 +166,19 @@ const Navbar = () => {
                         Mentor Details
                       </button>
                     )}
+
+                    {role === 'ADMIN' && (
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          navigate('/register');
+                        }}
+                        className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Register Admin
+                      </button>
+                    )}
+
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
@@ -232,6 +252,19 @@ const Navbar = () => {
                     Mentor Details
                   </button>
                 )}
+
+                {role === 'ADMIN' && (
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      navigate('/register');
+                    }}
+                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+                  >
+                    Register Admin
+                  </button>
+                )}
+                
                 <button
                   onClick={() => {
                     setMobileMenuOpen(false);

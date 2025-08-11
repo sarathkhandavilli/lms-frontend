@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
   
@@ -19,7 +22,7 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
     e.preventDefault();
 
     if (!formData.name || !formData.description) {
-      alert('Please fill in all fields');
+      toast.info('Please fill in all fields');
       return;
     }
 
@@ -27,19 +30,19 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
       if (categoryId) {
         // Update
         await axios.put(
-          'https://lms-backend-ol4a.onrender.com/category/update',
+          'http://localhost:8080/category/update',
           { id: parseInt(categoryId), ...formData },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        alert('Category updated successfully!');
+        toast.success('Category updated successfully!');
       } else {
         // Create
         await axios.post(
-          'https://lms-backend-ol4a.onrender.com/category/add',
+          'http://localhost:8080/category/add',
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        alert('Category created successfully!');
+        toast.success('Category created successfully!');
       }
 
       if (onCategoryCreated) onCategoryCreated();
@@ -47,7 +50,7 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
 
     } catch (error) {
       console.error(error);
-      alert('Failed to save category');
+      toast.error('Failed to save category');
     }
   };
 

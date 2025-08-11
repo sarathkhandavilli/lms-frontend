@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const LearnerDashboard = () => {
   const learnerId = localStorage.getItem('userId');
@@ -12,7 +15,7 @@ const LearnerDashboard = () => {
   const fetchMyCourses = async () => {
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.com/enrollment/fetch/learner-wise?learnerId=${learnerId}`,
+        `http://localhost:8080/enrollment/fetch/learner-wise?learnerId=${learnerId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCourses(response.data.data);

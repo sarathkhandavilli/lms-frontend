@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const MentorImage = ({ fileName }) => {
   const [imageUrl, setImageUrl] = useState(null);
@@ -7,7 +10,7 @@ const MentorImage = ({ fileName }) => {
     const fetchImage = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`https://lms-backend-ol4a.onrender.com/user/fetch/${fileName}`, {
+        const response = await fetch(`http://localhost:8080/user/fetch/${fileName}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

@@ -4,6 +4,9 @@ import axios from 'axios';
 import CreateCategory from './CreateCategory';
 import ProfileAvatar from '../components/ProfileAvatar';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const AdminDashboard = () => {
   const token = localStorage.getItem('token');
@@ -33,38 +36,38 @@ const AdminDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this mentor?')) return;
 
     try {
-      await axios.delete(`https://lms-backend-ol4a.onrender.com/user/mentor/delete?mentorId=${mentorId}`, {
+      await axios.delete(`http://localhost:8080/user/mentor/delete?mentorId=${mentorId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert('Mentor deleted successfully');
+      toast.success('Mentor deleted successfully');
       fetchUsers('MENTOR');
     } catch (error) {
       console.error('Failed to delete mentor:', error);
-      alert('Failed to delete mentor');
+      toast.error('Failed to delete mentor');
     }
   };
 
   const handleDeleteCategory = async (categoryId) => {
     try {
-      await axios.delete(`https://lms-backend-ol4a.onrender.com/category/delete?categoryId=${categoryId}`, {
+      await axios.delete(`http://localhost:8080/category/delete?categoryId=${categoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      alert('Category deleted successfully');
+      toast.success('Category deleted successfully');
       fetchCategories();
     } catch (error) {
       console.error('Failed to delete category:', error);
-      alert('Failed to delete category');
+      toast.error('Failed to delete category');
     }
   };
 
   const showEnrollments = async () => {
     setView('enrollments');
     try {
-      const response = await axios.get(`https://lms-backend-ol4a.onrender.com/enrollment/fetch/all`, {
+      const response = await axios.get(`http://localhost:8080/enrollment/fetch/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -79,7 +82,7 @@ const AdminDashboard = () => {
     setView(fetchRole === 'LEARNER' ? 'learners' : 'mentors');
 
     try {
-      const response = await axios.get(`https://lms-backend-ol4a.onrender.com/user/fetch/role-wise?role=${fetchRole}`, {
+      const response = await axios.get(`http://localhost:8080/user/fetch/role-wise?role=${fetchRole}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -89,7 +92,7 @@ const AdminDashboard = () => {
         ? setLearners(response.data.data)
         : setMentors(response.data.data);
     } catch (error) {
-      alert(`Failed to fetch ${fetchRole}s`);
+      toast.error(`Failed to fetch ${fetchRole}s`);
       console.log(error);
     }
   };
@@ -97,7 +100,7 @@ const AdminDashboard = () => {
   const fetchCategories = async () => {
     setView('categories');
     try {
-      const response = await axios.get('https://lms-backend-ol4a.onrender.com/category/fetch/all?status=active');
+      const response = await axios.get('http://localhost:8080/category/fetch/all?status=active');
       setCategories(response.data.data);
     } catch (error) {
       console.log(error);

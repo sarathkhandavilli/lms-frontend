@@ -4,6 +4,8 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import CreateSection from '../components/CreateSection';
 import CreateTopic from '../components/CreateTopic';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -23,9 +25,11 @@ const CourseDetails = () => {
   const fetchCourseDetailsForLearner = async () => {
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.com/courses/fetch/course-user-id?cid=${id}&uid=${userId}`,
+        `http://localhost:8080/courses/fetch/course-user-id?cid=${id}&uid=${userId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      console.log("Entire details ")
+      console.log(response.data.data);
       setCourseDetails(response.data.data);
       setIsEnrolled(true);
     } catch (error) {
@@ -36,8 +40,10 @@ const CourseDetails = () => {
   const fetchCourseDetails = async () => {
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.com/courses/fetch/course-id?courseId=${id}`
+        `http://localhost:8080/courses/fetch/course-id?courseId=${id}`
       );
+      console.log("Overview ")
+      console.log(response.data.data);
       setCourseDetails(response.data.data);
     } catch (error) {
       console.error(error);
@@ -52,13 +58,13 @@ const CourseDetails = () => {
         type: courseDetails.type,
         amount: 0,
       };
-      await axios.post('https://lms-backend-ol4a.onrender.com/enrollment/enroll', data, {
+      await axios.post('http://localhost:8080/enrollment/enroll', data, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      alert('Enrolled successfully!');
+      toast.success('Enrolled successfully!');
       setIsEnrolled(true);
     } catch (err) {
-      alert('Enrollment failed');
+      toast.error('Enrollment failed');
     }
   };
 
@@ -118,7 +124,7 @@ const CourseDetails = () => {
             )}
           </p>
           <p><span className="font-semibold">Discount:</span> {courseDetails.discountInPercent}%</p>
-          <p><span className="font-semibold">Type:</span> {courseDetails.type}</p>
+          {/* <p><span className="font-semibold">Type:</span> {courseDetails.type}</p> */}
           <p><span className="font-semibold">Prerequisite:</span> {courseDetails.prerequisite}</p>
         </div>
 
@@ -126,10 +132,10 @@ const CourseDetails = () => {
           <button
             onClick={() => {
               if (!role) {
-                alert("Please login");
+                toast("Please login");
                 return;
               }
-              if (courseDetails.price > 0) {
+              if (courseDetails.price > 0 && courseDetails.discountInPercent !== 100) {
                 navigate(`/payment`, {
                   state: {
                     courseId: courseDetails.courseId,
@@ -198,7 +204,7 @@ const CourseDetails = () => {
                                 {topic.topicNo} {topic.name}
                               </h4>
                               <p className="text-sm text-gray-700">{topic.description}</p>
-                              {( (isEnrolled || role === 'MENTOR') && (topic.youtubeUrl !== null)) && (
+                              {( (isEnrolled || role === 'MENTOR' || parseInt(courseDetails.mentorId) === parseInt(userId) ) && (topic.youtubeUrl !== null)) && (
                                 <p className="mt-1 text-black">
                                   ▶️ <a href={topic.youtubeUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">Watch Video</a>
                                 </p>
@@ -221,7 +227,7 @@ const CourseDetails = () => {
         <CreateSection
           courseId={id}
           onClose={() => setShowSectionModal(false)}
-          onSectionCreated={() => window.location.reload()}
+          onSectionCreated={() => fetchCourseDetails()}
         />
       )}
 
@@ -229,7 +235,7 @@ const CourseDetails = () => {
         <CreateTopic
           sectionId={selectedSectionId}
           onClose={() => setShowTopicModal(false)}
-          onTopicCreated={() => window.location.reload()}
+          onTopicCreated={() => fetchCourseDetailsForLearner()}
         />
       )}
     </>

@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import CourseCard from '../components/CourseCard';
 import Navbar from '../components/Navbar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -23,7 +26,7 @@ const HomePage = () => {
   const fetchAllcourses = async () => {
     try {
       const response = await axios.get(
-        'https://lms-backend-ol4a.onrender.com/courses/fetch/status-wise?status=active'
+        'http://localhost:8080/courses/fetch/status-wise?status=active'
       );
       setCourses(response.data.data);
     } catch (error) {
@@ -39,7 +42,7 @@ const HomePage = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          'https://lms-backend-ol4a.onrender.com/category/fetch/all?status=active'
+          'http://localhost:8080/category/fetch/all?status=active'
         );
         setCategories(response.data.data);
       } catch (error) {
@@ -55,7 +58,7 @@ const HomePage = () => {
     if (trimmedName !== '') {
       try {
         const response = await axios.get(
-          `https://lms-backend-ol4a.onrender.com/courses/fetch/name-wise?courseName=${trimmedName}&status=active`
+          `http://localhost:8080/courses/fetch/name-wise?courseName=${trimmedName}&status=active`
         );
         setCourses(response.data.data);
       } catch (error) {
@@ -69,10 +72,12 @@ const HomePage = () => {
       if (category !== 0) {
         try {
           const response = await axios.get(
-            `https://lms-backend-ol4a.onrender.com/courses/fetch/category-wise?categoryId=${category}&status=ACTIVE`
+            `http://localhost:8080/courses/fetch/category-wise?categoryId=${category}&status=ACTIVE`
           );
+          
           setCourses(response.data.data);
         } catch (error) {
+          setCourses([]);
           console.log(error);
         }
       } else {
@@ -138,14 +143,22 @@ const HomePage = () => {
 
       {/* Course List */}
       <div className="px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {courses.map((course) => (
-            <CourseCard
-              key={course.id}
-              course={course}
-              onClick={() => assignCourse(course.id)}
-            />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {courses.length === 0 ? (
+            <div className="col-span-full text-center py-6">
+              <p className="text-xl font-semibold text-gray-500">
+                No courses present in this category. Please try another category or search for courses.
+              </p>
+            </div>
+          ) : (
+            courses.map((course) => (
+              <CourseCard
+                key={course.id}
+                course={course}
+                onClick={() => assignCourse(course.id)}
+              />
+            ))
+          )}
         </div>
       </div>
     </>

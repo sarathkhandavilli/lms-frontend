@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Payment = () => {
   const { state } = useLocation();
@@ -28,16 +31,16 @@ const Payment = () => {
     e.preventDefault();
 
     try {
-      await axios.post('https://lms-backend-ol4a.onrender.com/enrollment/enroll', formData, {
+      await axios.post('http://localhost:8080/enrollment/enroll', formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
-      alert("Payment & Enrollment Successful");
+      toast.success("Payment & Enrollment Successful");
       navigate('/learner'); // redirect after success
     } catch (err) {
       console.error(err);
-      alert("Payment failed");
+      toast.error("Payment failed");
     }
   };
 

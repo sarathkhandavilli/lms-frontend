@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react'
 import './App.css'
 
-import React from 'react';
 import HomePage from './pages/HomePage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CourseDetails from './pages/CourseDetails';
@@ -10,12 +8,14 @@ import Login from './pages/Login';
 import MentorDashboard from './pages/MentorDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import LearnerDashboard from './pages/LearnerDashboard';
-import CreateSection from './components/CreateSection';
-import CreateTopic from './components/CreateTopic';
 import ProtectedRoute from './components/ProtectedRoute';
 import AddMentorDetails from './pages/AddMentorDetails';
 import Payment from './pages/Payment';
-import CreateCategory from './pages/CreateCategory';
+import EmailVerification from './pages/EmailVerification';
+import OtpVerification from './pages/OtpVerification';
+import ChangePassword from './pages/ChangePassword';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
 
@@ -29,6 +29,10 @@ const App = () => {
         <Route path="/course/:id" element={<CourseDetails />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
+        <Route path='/forgot-password' element={ <EmailVerification />  } />
+        <Route path='/verify-otp' element={ <OtpVerification />  } />
+        <Route path='/change-password' element={ <ChangePassword />  } />
+
 
         <Route
           path="/mentor"
@@ -77,6 +81,8 @@ const App = () => {
       </Routes>
 
     </Router>
+
+    <ToastContainer/>
     </>
   );
 };

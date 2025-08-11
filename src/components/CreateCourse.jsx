@@ -2,6 +2,9 @@ import React from 'react';
 import { useState,useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const CreateCourse = ({ onClose, onCourseCreated }) => {
 
@@ -25,7 +28,7 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          'https://lms-backend-ol4a.onrender.com/category/fetch/all?status=active'
+          'http://localhost:8080/category/fetch/all?status=active'
         );
         setCategories(response.data.data);
       } catch (error) {
@@ -39,7 +42,7 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
   const handleSubmit = async () => {
   if (type !== 'FREE') {
     if (!title || !description || !categoryId || !type || !price || !authorNote || !prerequisite || !thumbnail) {
-      alert('Please fill all required fields');
+      toast.info('Please fill all required fields');
       return;
     }
   }
@@ -57,19 +60,19 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
   formData.append('thumbnail', thumbnail);
 
   try {
-    const response = await axios.post('https://lms-backend-ol4a.onrender.com/courses/add', formData, {
+    const response = await axios.post('http://localhost:8080/courses/add', formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       },
     });
 
-    alert('Course created successfully!');
+    toast.success('Course created successfully!');
     navigate(`/course/${response.data.data.id}`);
     onClose();
   } catch (error) {
     console.error(error);
-    alert('Failed to create course.');
+    toast.error('Failed to create course.');
   }
 };
 

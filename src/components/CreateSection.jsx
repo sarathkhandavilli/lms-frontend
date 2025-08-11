@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
   const [sectionData, setSectionData] = useState({
@@ -22,19 +25,19 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
     };
 
     try {
-      const response = await axios.post('https://lms-backend-ol4a.onrender.com/courses/section/add', payload, {
+      const response = await axios.post('http://localhost:8080/courses/section/add', payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
         }
       });
 
-      alert('Section added successfully');
+      toast.success('Section added successfully');
       onSectionCreated(response.data.data?.id || null);
       onClose();
     } catch (error) {
       console.error(error);
-      alert('Failed to add section');
+      toast.error('Failed to add section');
     }
   };
 

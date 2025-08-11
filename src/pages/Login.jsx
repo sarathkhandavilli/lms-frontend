@@ -2,10 +2,19 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar'; // Adjust path if needed
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
+
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
+
+
+
+  const handleForgotPassword = () => {
+    navigate('/forgot-password')
+  }
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,7 +24,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://lms-backend-ol4a.onrender.com/user/login', form);
+      const response = await axios.post('http://localhost:8080/user/login', form);
       const { token, role, userId, firstName, lastName } = response.data.data;
 
       localStorage.setItem('token', token);
@@ -24,7 +33,7 @@ const Login = () => {
       localStorage.setItem('firstName', firstName);
       localStorage.setItem('lastName', lastName);
 
-      alert(`${role} is logged in`);
+      toast.success(`SUCCESSFULLY LOGGED IN AS ${role}`);
 
       if (role === 'MENTOR') {
         navigate('/mentor', { state: { mentorId: userId } });
@@ -35,7 +44,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error(error);
-      alert('Invalid credentials');
+      toast('Invalid credentials');
     }
   };
 
@@ -47,7 +56,7 @@ const Login = () => {
           onSubmit={handleSubmit}
           className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg space-y-6"
         >
-          <h2 className="text-2xl font-semibold text-center">Login</h2>
+          <h2 className="text-2xl font-semibold text-center" >Login</h2>
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-1">
@@ -85,6 +94,15 @@ const Login = () => {
           >
             Login
           </button>
+          <div className="text-center">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-black underline hover:text-black"
+            >
+              Forgot password?
+            </button>
+            </div>
         </form>
       </div>
     </>

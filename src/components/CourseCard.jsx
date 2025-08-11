@@ -12,7 +12,7 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
   return (
     <div className="bg-white border rounded-lg shadow-sm hover:shadow-lg transition duration-300 flex flex-col">
       <img
-        src={`https://lms-backend-ol4a.onrender.com/courses/fetch/${course.thumbnailName}`}
+        src={`http://localhost:8080/courses/fetch/${course.thumbnailName}`}
         alt={course.name}
         className="w-full h-40 object-cover rounded-t-lg"
       />
@@ -21,7 +21,8 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
           <h3 className="text-md font-semibold text-black">{course.name}</h3>
           <div className="flex justify-between items-center mt-4 text-black">
             <span className="font-bold text-sm">
-              ₹{course.price === 0 ? 'Free' : course.price.toFixed(2)}
+              
+              ₹{ (course.price === 0 || course.discountInPercent === 100 )? 'Free' : course.price.toFixed(2)}
             </span>
           </div>
         </div>
@@ -36,12 +37,10 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
           </button> }
           
 
-          {/* Show edit/delete only if role is MENTOR */}
           {role === 'MENTOR' && showActions && (
             <div className="flex justify-between gap-2">
               <button
                 onClick={(e) => {
-                  e.stopPropagation();
                   onEdit(course);
                 }}
                 className="flex-1 px-3 py-1 bg-black text-white rounded hover:bg-zinc-800"

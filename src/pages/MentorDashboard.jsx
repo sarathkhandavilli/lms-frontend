@@ -4,6 +4,9 @@ import axios from 'axios';
 import CourseCard from '../components/CourseCard';
 import { useNavigate } from 'react-router-dom';
 import CreateCourse from '../components/CreateCourse';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const MentorDashboard = () => {
   const mentorId = localStorage.getItem('userId');
@@ -26,22 +29,22 @@ const MentorDashboard = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`https://lms-backend-ol4a.onrender.com/courses/delete?courseId=${courseId}&mentorId=${mentorId}`, {
+      await axios.delete(`http://localhost:8080/courses/delete?courseId=${courseId}&mentorId=${mentorId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Course deleted successfully');
+      toast.success('Course deleted successfully');
+      fetchMentorDashboard();
       showMentorCourses();
-      window.location.reload();
     } catch (error) {
       console.error(error);
-      alert('Failed to delete course');
+      toast.error('Failed to delete course');
     }
   };
 
   const fetchMentorDashboard = async () => {
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.com/courses/mentor/dashboard?mentorId=${mentorId}`,
+        `http://localhost:8080/courses/mentor/dashboard?mentorId=${mentorId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -56,7 +59,7 @@ const MentorDashboard = () => {
     setView('courses');
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.com/courses/fetch/mentor-wise?mentorId=${mentorId}&status=ACTIVE`,
+        `http://localhost:8080/courses/fetch/mentor-wise?mentorId=${mentorId}&status=ACTIVE`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -72,7 +75,7 @@ const MentorDashboard = () => {
     setView('enrollments');
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.com/enrollment/fetch/mentor-wise?mentorId=${mentorId}`,
+        `http://localhost:8080/enrollment/fetch/mentor-wise?mentorId=${mentorId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -162,7 +165,7 @@ const MentorDashboard = () => {
                 {mentorCourses.length === 0 ? (
                   <p>No courses created.</p>
                 ) : (
-                  <ul className="flex flex-wrap gap-4">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {mentorCourses.map((course) => (
                       <CourseCard
                         key={course.id}
@@ -183,7 +186,7 @@ const MentorDashboard = () => {
                 {enrollments.length === 0 ? (
                   <p>No enrollments found.</p>
                 ) : (
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {enrollments.map((enrollment, index) => (
                       <li key={index} className="border p-4 rounded bg-gray-50">
                         <p><strong>Learner:</strong> {enrollment.learnerName}</p>

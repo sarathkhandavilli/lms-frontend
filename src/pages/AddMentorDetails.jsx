@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MentorImage from '../components/MentorImage';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 const AddMentorDetails = () => {
   const [mentorForm, setMentorForm] = useState({
@@ -21,7 +25,7 @@ const AddMentorDetails = () => {
     const fetchMentorFullProfile = async () => {
       try {
         const response = await axios.get(
-          `https://lms-backend-ol4a.onrender.com/user/fetch/mentor-id?mentorId=${mentorId}`,
+          `http://localhost:8080/user/fetch/mentor-id?mentorId=${mentorId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -75,7 +79,7 @@ const AddMentorDetails = () => {
 
     try {
       const response = await axios.post(
-        'https://lms-backend-ol4a.onrender.com/user/mentordetail/add',
+        'http://localhost:8080/user/mentordetail/add',
         form,
         {
           headers: {
@@ -89,7 +93,7 @@ const AddMentorDetails = () => {
       setShowForm(false);
     } catch (error) {
       console.error(error);
-      alert('Error submitting mentor details');
+      toast.error('Error submitting mentor details');
     }
   };
 
