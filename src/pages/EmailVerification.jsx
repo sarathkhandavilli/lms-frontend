@@ -21,7 +21,7 @@ const EmailVerification = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:8080/forgotpassword/verifyMail?email=${email}`
+        `https://lms-backend-ol4a.onrender.comforgotpassword/verifyMail?email=${email}`
       );
       
       if (response.status === 200) {

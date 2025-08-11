@@ -12,7 +12,7 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
   return (
     <div className="bg-white border rounded-lg shadow-sm hover:shadow-lg transition duration-300 flex flex-col">
       <img
-        src={`http://localhost:8080/courses/fetch/${course.thumbnailName}`}
+        src={`https://lms-backend-ol4a.onrender.comcourses/fetch/${course.thumbnailName}`}
         alt={course.name}
         className="w-full h-40 object-cover rounded-t-lg"
       />

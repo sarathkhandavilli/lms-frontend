@@ -22,7 +22,7 @@ const ProfileAvatar = ({  userId, firstName, lastName, profilePic }) => {
 
         if (Role === 'MENTOR' && !fileName) {
           const profileRes = await axios.get(
-            `http://localhost:8080/user/fetch/mentor-id?mentorId=${UserId}`,
+            `https://lms-backend-ol4a.onrender.comuser/fetch/mentor-id?mentorId=${UserId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -32,7 +32,7 @@ const ProfileAvatar = ({  userId, firstName, lastName, profilePic }) => {
 
         if (fileName ) {
           const imageRes = await axios.get(
-            `http://localhost:8080/user/fetch/${fileName}`,
+            `https://lms-backend-ol4a.onrender.comuser/fetch/${fileName}`,
             {
               responseType: 'blob',
             }

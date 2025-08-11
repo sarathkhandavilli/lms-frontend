@@ -10,7 +10,7 @@ const MentorImage = ({ fileName }) => {
     const fetchImage = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:8080/user/fetch/${fileName}`, {
+        const response = await fetch(`https://lms-backend-ol4a.onrender.comuser/fetch/${fileName}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
