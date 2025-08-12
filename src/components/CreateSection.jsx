@@ -3,13 +3,14 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
   const [sectionData, setSectionData] = useState({
     sectionNo: '',
     name: '',
     description: ''
   });
+
+  const [isAdding, setIsAdding] = useState(false); // NEW
 
   const token = localStorage.getItem('token');
   const mentorId = localStorage.getItem('userId');
@@ -19,7 +20,10 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
   };
 
   const handleSubmit = async () => {
-     const payload = {
+    if (isAdding) return; // Prevent double clicks
+    setIsAdding(true);
+
+    const payload = {
       ...sectionData,
       courseId: parseInt(courseId),
     };
@@ -38,6 +42,8 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
     } catch (error) {
       console.error(error);
       toast.error('Failed to add section');
+    } finally {
+      setIsAdding(false);
     }
   };
 
@@ -46,7 +52,13 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
       <div className="bg-white p-6 rounded-lg w-[500px] shadow-xl space-y-4">
         <div className="flex justify-between mb-4">
           <h2 className="text-xl font-semibold">Add Section</h2>
-          <button onClick={onClose} className="text-xl">&times;</button>
+          <button
+            onClick={onClose}
+            disabled={isAdding} // Disable while adding
+            className={`text-xl ${isAdding ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            &times;
+          </button>
         </div>
         <input
           type="text"
@@ -74,9 +86,10 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
         />
         <button
           onClick={handleSubmit}
-          className="w-full bg-black text-white py-2 rounded"
+          disabled={isAdding}
+          className={`w-full py-2 rounded text-white ${isAdding ? 'bg-gray-500' : 'bg-black hover:bg-gray-800'}`}
         >
-          Add Section
+          {isAdding ? 'Adding...' : 'Add Section'}
         </button>
       </div>
     </div>

@@ -4,8 +4,6 @@ import MentorImage from '../components/MentorImage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
 const AddMentorDetails = () => {
   const [mentorForm, setMentorForm] = useState({
     age: '',
@@ -17,6 +15,8 @@ const AddMentorDetails = () => {
 
   const [mentorDetails, setMentorDetails] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const mentorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
@@ -27,9 +27,7 @@ const AddMentorDetails = () => {
         const response = await axios.get(
           `https://lms-backend-cr9o.onrender.com/user/fetch/mentor-id?mentorId=${mentorId}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
@@ -43,7 +41,7 @@ const AddMentorDetails = () => {
             qualification: detail.qualification,
             profession: detail.profession,
             profilePic: detail.profilePic,
-            fullName: mentor.firstName + ' ' + mentor.lastName
+            fullName: `${mentor.firstName} ${mentor.lastName}`
           });
           setShowForm(false);
         } else {
@@ -68,6 +66,7 @@ const AddMentorDetails = () => {
 
   const handleMentorSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const form = new FormData();
     form.append('age', mentorForm.age);
@@ -94,11 +93,19 @@ const AddMentorDetails = () => {
     } catch (error) {
       console.error(error);
       toast.error('Error submitting mentor details');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  const handleUpdateClick = () => {
+    setIsUpdating(true);
+    setShowForm(true);
+    setIsUpdating(false);
+  };
+
   return (
-    <div className="flex justify-center items-center min-h-screen  text-white px-4">
+    <div className="flex justify-center items-center min-h-screen text-white px-4">
       {showForm ? (
         <form
           onSubmit={handleMentorSubmit}
@@ -147,9 +154,12 @@ const AddMentorDetails = () => {
           />
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
+            disabled={isSubmitting}
+            className={`w-full text-white py-2 rounded transition ${
+              isSubmitting ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-gray-800'
+            }`}
           >
-            Submit
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </button>
         </form>
       ) : (
@@ -170,10 +180,13 @@ const AddMentorDetails = () => {
               <p><strong>Profession:</strong> {mentorDetails.profession}</p>
             </div>
             <button
-              onClick={() => setShowForm(true)}
-              className="w-full bg-black text-white py-2 mt-6 rounded hover:bg-gray-800 transition"
+              onClick={handleUpdateClick}
+              disabled={isUpdating}
+              className={`w-full text-white py-2 mt-6 rounded transition ${
+                isUpdating ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-gray-800'
+              }`}
             >
-              Update
+              {isUpdating ? 'Updating...' : 'Update'}
             </button>
           </div>
         )

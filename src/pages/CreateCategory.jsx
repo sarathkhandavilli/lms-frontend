@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
-  
   const categoryId = id;
   const [formData, setFormData] = useState({ name: '', description: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false); // NEW
   const token = localStorage.getItem('token');
 
   const handleChange = (e) => {
@@ -20,11 +18,14 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return; // Prevent double clicks
 
     if (!formData.name || !formData.description) {
       toast.info('Please fill in all fields');
       return;
     }
+
+    setIsSubmitting(true);
 
     try {
       if (categoryId) {
@@ -51,6 +52,8 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
     } catch (error) {
       console.error(error);
       toast.error('Failed to save category');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -61,7 +64,13 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
           <h2 className="text-xl font-semibold">
             {categoryId ? "Update Category" : "Create New Category"}
           </h2>
-          <button onClick={onClose} className="text-xl font-bold">&times;</button>
+          <button
+            onClick={onClose}
+            disabled={isSubmitting}
+            className={`text-xl font-bold ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            &times;
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -85,9 +94,18 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
           />
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+            disabled={isSubmitting}
+            className={`w-full py-2 rounded text-white ${
+              isSubmitting ? 'bg-gray-500' : 'bg-black hover:bg-gray-800'
+            }`}
           >
-            {categoryId ? "Update Category" : "Create New Category"}
+            {isSubmitting
+              ? categoryId
+                ? 'Updating...'
+                : 'Creating...'
+              : categoryId
+              ? 'Update Category'
+              : 'Create New Category'}
           </button>
         </form>
       </div>

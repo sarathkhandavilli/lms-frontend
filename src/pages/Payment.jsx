@@ -4,12 +4,12 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
 const Payment = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [formData, setFormData] = useState({
     cardNo: '',
@@ -29,6 +29,7 @@ const Payment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsProcessing(true);
 
     try {
       await axios.post('https://lms-backend-cr9o.onrender.com/enrollment/enroll', formData, {
@@ -37,10 +38,12 @@ const Payment = () => {
         }
       });
       toast.success("Payment & Enrollment Successful");
-      navigate('/learner'); // redirect after success
+      navigate('/learner');
     } catch (err) {
       console.error(err);
       toast.error("Payment failed");
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -108,8 +111,16 @@ const Payment = () => {
             className="w-full border px-3 py-2 bg-gray-100 rounded"
           />
         </div>
-        <button type="submit" className="w-full bg-black text-white py-2 rounded hover:bg-zinc-800">
-          Pay & Enroll
+        <button
+          type="submit"
+          disabled={isProcessing}
+          className={`w-full py-2 rounded text-white transition ${
+            isProcessing
+              ? 'bg-gray-500 cursor-not-allowed'
+              : 'bg-black hover:bg-zinc-800'
+          }`}
+        >
+          {isProcessing ? 'Processing...' : 'Pay & Enroll'}
         </button>
       </form>
     </div>

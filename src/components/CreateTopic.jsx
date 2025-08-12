@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 
 const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
   const [topicData, setTopicData] = useState({
@@ -12,7 +11,8 @@ const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
     youtubeUrl: ''
   });
 
-  const mentorId = localStorage.getItem('userId');
+  const [isAdding, setIsAdding] = useState(false); // NEW
+
   const token = localStorage.getItem('token');
 
   const handleChange = (e) => {
@@ -20,6 +20,9 @@ const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
   };
 
   const handleSubmit = async () => {
+    if (isAdding) return; // Prevent double submission
+    setIsAdding(true);
+
     const payload = {
       ...topicData,
       sectionId: parseInt(sectionId)
@@ -34,11 +37,13 @@ const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
       });
 
       toast.success('Topic added successfully');
-      onClose();
       onTopicCreated();
+      onClose();
     } catch (error) {
       console.error(error);
       toast.error('Failed to add topic');
+    } finally {
+      setIsAdding(false);
     }
   };
 
@@ -47,7 +52,13 @@ const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
       <div className="bg-white p-6 rounded-lg w-[500px] shadow-xl space-y-4">
         <div className="flex justify-between mb-4">
           <h2 className="text-xl font-semibold">Add Topic</h2>
-          <button onClick={onClose} className="text-xl">&times;</button>
+          <button
+            onClick={onClose}
+            disabled={isAdding}
+            className={`text-xl ${isAdding ? 'opacity-50 cursor-not-allowed' : ''}`}
+          >
+            &times;
+          </button>
         </div>
 
         <input
@@ -88,9 +99,10 @@ const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-black text-white py-2 rounded"
+          disabled={isAdding}
+          className={`w-full py-2 rounded text-white ${isAdding ? 'bg-gray-500' : 'bg-black hover:bg-gray-800'}`}
         >
-          Add Topic
+          {isAdding ? 'Adding...' : 'Add Topic'}
         </button>
       </div>
     </div>

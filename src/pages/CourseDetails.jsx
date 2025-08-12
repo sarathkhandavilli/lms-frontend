@@ -4,7 +4,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import CreateSection from '../components/CreateSection';
 import CreateTopic from '../components/CreateTopic';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const CourseDetails = () => {
@@ -21,6 +21,7 @@ const CourseDetails = () => {
   const [showTopicModal, setShowTopicModal] = useState(false);
   const [selectedSectionId, setSelectedSectionId] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(false);
+  const [isEnrolling, setIsEnrolling] = useState(false); // NEW
 
   const fetchCourseDetailsForLearner = async () => {
     try {
@@ -28,8 +29,6 @@ const CourseDetails = () => {
         `https://lms-backend-cr9o.onrender.com/courses/fetch/course-user-id?cid=${id}&uid=${userId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("Entire details ")
-      console.log(response.data.data);
       setCourseDetails(response.data.data);
       setIsEnrolled(true);
     } catch (error) {
@@ -42,8 +41,6 @@ const CourseDetails = () => {
       const response = await axios.get(
         `https://lms-backend-cr9o.onrender.com/courses/fetch/course-id?courseId=${id}`
       );
-      console.log("Overview ")
-      console.log(response.data.data);
       setCourseDetails(response.data.data);
     } catch (error) {
       console.error(error);
@@ -51,6 +48,9 @@ const CourseDetails = () => {
   };
 
   const enrollLearner = async (courseId) => {
+    if (isEnrolling) return; // Prevent spam click
+    setIsEnrolling(true);
+
     try {
       const data = {
         courseId,
@@ -65,6 +65,8 @@ const CourseDetails = () => {
       setIsEnrolled(true);
     } catch (err) {
       toast.error('Enrollment failed');
+    } finally {
+      setIsEnrolling(false);
     }
   };
 
@@ -129,7 +131,6 @@ const CourseDetails = () => {
 
           </p>
           <p><span className="font-semibold">Discount:</span> {courseDetails.discountInPercent}%</p>
-          {/* <p><span className="font-semibold">Type:</span> {courseDetails.type}</p> */}
           <p><span className="font-semibold">Prerequisite:</span> {courseDetails.prerequisite}</p>
         </div>
 
@@ -153,9 +154,12 @@ const CourseDetails = () => {
                 enrollLearner(courseDetails.courseId);
               }
             }}
-            className="mt-6 bg-black text-white px-6 py-2 rounded hover:bg-zinc-800 transition"
+            disabled={isEnrolling}
+            className={`mt-6 px-6 py-2 rounded transition text-white ${
+              isEnrolling ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-zinc-800'
+            }`}
           >
-            Enroll Now
+            {isEnrolling ? 'Enrolling...' : 'Enroll Now'}
           </button>
         )}
 

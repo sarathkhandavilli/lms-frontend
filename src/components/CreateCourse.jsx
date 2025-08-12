@@ -1,14 +1,11 @@
-import React from 'react';
-import { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-const CreateCourse = ({ onClose, onCourseCreated }) => {
-
-    const navigate = useNavigate() ;
+const CreateCourse = ({ onClose }) => {
+  const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -20,6 +17,7 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
   const [thumbnail, setThumbnail] = useState(null);
   const [categoryId, setCategoryId] = useState(0);
   const [categories, setCategories] = useState([]);
+  const [isCreating, setIsCreating] = useState(false); // NEW
 
   const mentorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
@@ -40,49 +38,60 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
   }, []);
 
   const handleSubmit = async () => {
-  if (type !== 'FREE') {
-    if (!title || !description || !categoryId || !type || !price || !authorNote || !prerequisite || !thumbnail) {
-      toast.info('Please fill all required fields');
-      return;
+    if (isCreating) return; // Prevent double-click
+    setIsCreating(true);
+
+    if (type !== 'FREE') {
+      if (!title || !description || !categoryId || !type || !price || !authorNote || !prerequisite || !thumbnail) {
+        toast.info('Please fill all required fields');
+        setIsCreating(false);
+        return;
+      }
     }
-  }
 
-  const formData = new FormData();
-  formData.append('mentorId', mentorId);
-  formData.append('categoryId', categoryId);
-  formData.append('name', title);
-  formData.append('description', description);
-  formData.append('type', type);
-  if (price !== '') formData.append('price', parseFloat(price));
-  if (discount !== '') formData.append('discountInPercent', parseInt(discount));
-  formData.append('authorCourseNote', authorNote);
-  formData.append('prerequisite', prerequisite);
-  formData.append('thumbnail', thumbnail);
+    const formData = new FormData();
+    formData.append('mentorId', mentorId);
+    formData.append('categoryId', categoryId);
+    formData.append('name', title);
+    formData.append('description', description);
+    formData.append('type', type);
+    if (price !== '') formData.append('price', parseFloat(price));
+    if (discount !== '') formData.append('discountInPercent', parseInt(discount));
+    formData.append('authorCourseNote', authorNote);
+    formData.append('prerequisite', prerequisite);
+    formData.append('thumbnail', thumbnail);
 
-  try {
-    const response = await axios.post('https://lms-backend-cr9o.onrender.com/courses/add', formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    try {
+      const response = await axios.post('https://lms-backend-cr9o.onrender.com/courses/add', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
-    toast.success('Course created successfully!');
-    navigate(`/course/${response.data.data.id}`);
-    onClose();
-  } catch (error) {
-    console.error(error);
-    toast.error('Failed to create course.');
-  }
-};
+      toast.success('Course created successfully!');
+      navigate(`/course/${response.data.data.id}`);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to create course.');
+    } finally {
+      setIsCreating(false);
+    }
+  };
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-opacity-60 backdrop-blur-md flex justify-center items-center z-50">
-    <div className="bg-white p-6 rounded-lg w-[500px] max-h-[90vh] overflow-y-auto shadow-xl">
-      <div className="flex justify-between mb-4">
-        <h2 className="text-xl font-semibold">Create New Course</h2>
-        <button onClick={onClose} className="text-xl font-bold text-gray-500 hover:text-black">&times;</button>
-      </div>
+      <div className="bg-white p-6 rounded-lg w-[500px] max-h-[90vh] overflow-y-auto shadow-xl">
+        <div className="flex justify-between mb-4">
+          <h2 className="text-xl font-semibold">Create New Course</h2>
+          <button
+            onClick={onClose}
+            className="text-xl font-bold text-gray-500 hover:text-black"
+            disabled={isCreating}
+          >
+            &times;
+          </button>
+        </div>
 
         <div className="space-y-3">
           <input
@@ -122,26 +131,25 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
             <option value="FREE">Free</option>
           </select>
 
-            {type === 'PAID' && (
+          {type === 'PAID' && (
             <>
-                <input
+              <input
                 type="number"
                 placeholder="Price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 className="w-full p-2 border rounded"
-                />
+              />
 
-                <input
+              <input
                 type="number"
                 placeholder="Discount (%)"
                 value={discount}
                 onChange={(e) => setDiscount(e.target.value)}
                 className="w-full p-2 border rounded"
-                />
+              />
             </>
-            )}
-
+          )}
 
           <textarea
             placeholder="Author Course Note"
@@ -159,28 +167,28 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
           />
 
           <div className="w-full">
-                <label
-                    htmlFor="thumbnail"
-                    className="block w-full text-center cursor-pointer bg-gray-200 hover:bg-gray-300 text-black py-2 rounded transition"
-                >
-                    {thumbnail ? thumbnail.name : "📁 Choose Thumbnail Image"}
-                </label>
+            <label
+              htmlFor="thumbnail"
+              className="block w-full text-center cursor-pointer bg-gray-200 hover:bg-gray-300 text-black py-2 rounded transition"
+            >
+              {thumbnail ? thumbnail.name : "📁 Choose Thumbnail Image"}
+            </label>
 
-                <input
-                    id="thumbnail"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setThumbnail(e.target.files[0])}
-                    className="hidden"
-                />
-                </div>
-
+            <input
+              id="thumbnail"
+              type="file"
+              accept="image/*"
+              onChange={(e) => setThumbnail(e.target.files[0])}
+              className="hidden"
+            />
+          </div>
 
           <button
             onClick={handleSubmit}
-            className="w-full bg-black text-white py-2 rounded"
+            disabled={isCreating}
+            className={`w-full py-2 rounded text-white ${isCreating ? "bg-gray-500" : "bg-black hover:bg-gray-800"}`}
           >
-            Create Course
+            {isCreating ? "Creating..." : "Create Course"}
           </button>
         </div>
       </div>

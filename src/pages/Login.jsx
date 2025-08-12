@@ -1,20 +1,18 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar'; // Adjust path if needed
+import Navbar from '../components/Navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
-
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
-
-
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const handleForgotPassword = () => {
-    navigate('/forgot-password')
-  }
+    navigate('/forgot-password');
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -22,6 +20,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoggingIn(true);
 
     try {
       const response = await axios.post('https://lms-backend-cr9o.onrender.com/user/login', form);
@@ -53,8 +52,9 @@ const Login = () => {
       } else {
         toast.error("❌ Login failed. Please try again later.");
       }
+    } finally {
+      setIsLoggingIn(false);
     }
-
   };
 
   return (
@@ -65,7 +65,7 @@ const Login = () => {
           onSubmit={handleSubmit}
           className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg space-y-6"
         >
-          <h2 className="text-2xl font-semibold text-center" >Login</h2>
+          <h2 className="text-2xl font-semibold text-center">Login</h2>
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-1">
@@ -99,10 +99,16 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded hover:bg-gray-800"
+            disabled={isLoggingIn}
+            className={`w-full py-2 rounded text-white transition ${
+              isLoggingIn
+                ? 'bg-gray-500 cursor-not-allowed'
+                : 'bg-black hover:bg-gray-800'
+            }`}
           >
-            Login
+            {isLoggingIn ? 'Logging in...' : 'Login'}
           </button>
+
           <div className="text-center">
             <button
               type="button"
@@ -111,7 +117,7 @@ const Login = () => {
             >
               Forgot password?
             </button>
-            </div>
+          </div>
         </form>
       </div>
     </>
