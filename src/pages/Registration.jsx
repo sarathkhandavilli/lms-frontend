@@ -10,6 +10,7 @@ const Registration = () => {
   const navigate = useNavigate();
 
   const role = localStorage.getItem('role'); // Get role from localStorage
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -29,22 +30,28 @@ const Registration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSendingOtp(true)
+    console.log(formData)
 
     try {
-      await axios.post('https://lms-backend-ol4a.onrender.com/user/register', formData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      toast.success('Successfully registered!');
-      navigate('/');
-    } catch (error) {
-      if (error.status == 400) {
-        toast.warn("User with this email is already exists!")
+        const response = await axios.post(`https://lms-backend-ol4a.onrender.com/user/verifymail?email=${formData.emailId}`);
+        if (response.status === 200) {
+          toast.success('📩 OTP sent to your email! Please check your inbox or spam folder.');
+          navigate('/verify-otp', { state: { formData } });
+        }
+      } catch (error) {
+        const status = error.response?.status;
+        if (status === 400) {
+          toast.warn("⚠️ An account with this email already exists. Try logging in instead.");
+        } else if (status === 500) {
+          toast.error("❌ Server error while sending OTP. Please try again.");
+        } else {
+          toast.error("❌ Unable to send OTP. Check your internet connection.");
+        }
+      } finally {
+        setIsSendingOtp(false)
       }
-      console.error(error);
-    }
+
   };
 
   return (
@@ -145,10 +152,20 @@ const Registration = () => {
 
           <button
             type="submit"
-            className="w-full mt-5 bg-black text-white py-2 rounded-md hover:bg-gray-900 transition text-sm"
+            disabled={isSendingOtp}
+            className={`w-full mt-5 py-2 rounded-md transition text-sm ${
+              isSendingOtp
+                ? 'bg-gray-500 cursor-not-allowed'
+                : 'bg-black hover:bg-gray-900 text-white'
+            }`}
           >
-            {role === 'ADMIN' ? 'Register Admin' : 'Sign Up'}
+            {isSendingOtp
+              ? 'Sending OTP...'
+              : role === 'ADMIN'
+              ? 'Register Admin'
+              : 'Sign Up'}
           </button>
+
         </form>
       </div>
     </>

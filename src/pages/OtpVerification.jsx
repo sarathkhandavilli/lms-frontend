@@ -10,6 +10,7 @@ const OtpVerification = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const email = location?.state?.email;
+  const formData = location?.state?.formData;
 
   const [otp, setOtp] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,21 +26,44 @@ const OtpVerification = () => {
     setError(''); // Clear any previous error message
 
     try {
-      // Send OTP and email to the API for verification
-      const response = await axios.post(
-        `https://lms-backend-ol4a.onrender.com/forgotpassword/verifyOtp/${otp}/${email}`
-      );
-      
-      if (response.status === 200) {
-        toast.success('OTP verified successfully!');
-        navigate('/change-password', { state: { email: email } }); // Navigate to password change page
+        if (!formData?.emailId || formData.emailId.trim() === "") {
+          console.log('entered into  forgot password otp')
+          // Forgot Password Flow
+          const response = await axios.post(
+            `https://lms-backend-ol4a.onrender.com/forgotpassword/verifyOtp/${otp}/${email}`
+          );
+          if (response.status === 200) {
+            toast.success('✅ OTP verified! You can now reset your password.');
+            navigate('/change-password', { state: { email } });
+          }
+        } else {
+          console.log(formData)
+          console.log('entered into registration otp')
+          // Registration Flow
+          const response = await axios.post(
+            `https://lms-backend-ol4a.onrender.com/user/verifyotp/${otp}/${formData.emailId}`
+          );
+          if (response.status === 200) {
+            await axios.post('https://lms-backend-ol4a.onrender.com/user/register', formData, {
+              headers: { 'Content-Type': 'application/json' },
+            });
+            toast.success('🎉 Registration complete! Welcome aboard.');
+            navigate('/', { state: { formData } });
+          }
+        }
+      } catch (err) {
+        const status = err.response?.status;
+        if (status === 401) {
+          toast.warn('⚠️ Incorrect OTP. Please try again.');
+        } else if (status === 417) {
+          toast.error('⏳ OTP expired. Please request a new one.');
+        } else {
+          toast.error('❌ OTP verification failed. Please try again later.');
+        }
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (err) {
-      console.error(err);
-      setError('Failed to verify OTP. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
+
   };
 
   return (

@@ -31,8 +31,12 @@ const EmailVerification = () => {
       navigate('/verify-otp', { state: { email: email } });
 
     } catch (err) {
+
+      const status = err.response.status;
+      if (status === 404) {
+        toast.warn('Email not found!');
+      } 
       console.error(err);
-      toast.error('Failed to send OTP. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

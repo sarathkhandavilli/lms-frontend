@@ -27,14 +27,13 @@ const Login = () => {
       const response = await axios.post('https://lms-backend-ol4a.onrender.com/user/login', form);
       const { token, role, userId, firstName, lastName } = response.data.data;
 
-
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
       localStorage.setItem('userId', userId);
       localStorage.setItem('firstName', firstName);
       localStorage.setItem('lastName', lastName);
 
-      toast.success(`SUCCESSFULLY LOGGED IN AS ${role}`);
+      toast.success(`✅ Welcome back, ${firstName}!`);
 
       if (role === 'MENTOR') {
         navigate('/mentor', { state: { mentorId: userId } });
@@ -44,20 +43,18 @@ const Login = () => {
         navigate('/learner', { state: { learnerId: userId } });
       }
     } catch (error) {
-
-      const status = error.response.status ;
-
+      const status = error.response?.status;
       if (status === 403) {
-        toast.error("user is inactive");
-      } else if ( status === 404) {
-        toast.error("user with this mail is not registered!")
-      } else if ( status === 401) {
-        toast.error("incorrect password")
+        toast.error("🚫 Your account is inactive. Contact support.");
+      } else if (status === 404) {
+        toast.warn("⚠️ No account found with this email. Please sign up.");
+      } else if (status === 401) {
+        toast.error("🔑 Incorrect password. Try again.");
       } else {
-        toast.error("something went wrong");
+        toast.error("❌ Login failed. Please try again later.");
       }
-      console.error(error);
     }
+
   };
 
   return (

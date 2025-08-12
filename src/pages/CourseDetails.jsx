@@ -114,14 +114,19 @@ const CourseDetails = () => {
           <p><span className="font-semibold">Author Note:</span> {courseDetails.authorCourseNote}</p>
           <p>
             <span className="font-semibold">Price:</span>{' '}
-            {courseDetails.price === 0 ? (
-              <span className="text-green-600 font-bold">Free</span>
-            ) : (
-              <>
-                <span className="line-through text-red-600">₹{courseDetails.price.toFixed(2)}</span>{' '}
-                <span className="text-green-600 font-bold">₹{discountedPrice}</span>
-              </>
-            )}
+              {courseDetails.price === 0 ? (
+                <span className="text-green-600 font-bold">Free</span>
+              ) : (
+                <>
+                  {courseDetails.discountInPercent !== 0 && (
+                    <span className="line-through text-red-600">
+                      ₹{courseDetails.price.toFixed(2)}
+                    </span>
+                  )}{' '}
+                  <span className="text-green-600 font-bold">₹{discountedPrice}</span>
+                </>
+              )}
+
           </p>
           <p><span className="font-semibold">Discount:</span> {courseDetails.discountInPercent}%</p>
           {/* <p><span className="font-semibold">Type:</span> {courseDetails.type}</p> */}
