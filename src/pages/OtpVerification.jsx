@@ -30,7 +30,7 @@ const OtpVerification = () => {
           console.log('entered into  forgot password otp')
           // Forgot Password Flow
           const response = await axios.post(
-            `https://lms-backend-ol4a.onrender.com/forgotpassword/verifyOtp/${otp}/${email}`
+            `https://lms-backend-cr9o.onrender.com/forgotpassword/verifyOtp/${otp}/${email}`
           );
           if (response.status === 200) {
             toast.success('✅ OTP verified! You can now reset your password.');
@@ -41,10 +41,10 @@ const OtpVerification = () => {
           console.log('entered into registration otp')
           // Registration Flow
           const response = await axios.post(
-            `https://lms-backend-ol4a.onrender.com/user/verifyotp/${otp}/${formData.emailId}`
+            `https://lms-backend-cr9o.onrender.com/user/verifyotp/${otp}/${formData.emailId}`
           );
           if (response.status === 200) {
-            await axios.post('https://lms-backend-ol4a.onrender.com/user/register', formData, {
+            await axios.post('https://lms-backend-cr9o.onrender.com/user/register', formData, {
               headers: { 'Content-Type': 'application/json' },
             });
             toast.success('🎉 Registration complete! Welcome aboard.');

@@ -26,7 +26,7 @@ const HomePage = () => {
   const fetchAllcourses = async () => {
     try {
       const response = await axios.get(
-        'https://lms-backend-ol4a.onrender.com/courses/fetch/status-wise?status=active'
+        'https://lms-backend-cr9o.onrender.com/courses/fetch/status-wise?status=active'
       );
       setCourses(response.data.data);
     } catch (error) {
@@ -42,7 +42,7 @@ const HomePage = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          'https://lms-backend-ol4a.onrender.com/category/fetch/all?status=active'
+          'https://lms-backend-cr9o.onrender.com/category/fetch/all?status=active'
         );
         setCategories(response.data.data);
       } catch (error) {
@@ -58,7 +58,7 @@ const HomePage = () => {
     if (trimmedName !== '') {
       try {
         const response = await axios.get(
-          `https://lms-backend-ol4a.onrender.com/courses/fetch/name-wise?courseName=${trimmedName}&status=active`
+          `https://lms-backend-cr9o.onrender.com/courses/fetch/name-wise?courseName=${trimmedName}&status=active`
         );
         setCourses(response.data.data);
       } catch (error) {
@@ -72,7 +72,7 @@ const HomePage = () => {
       if (category !== 0) {
         try {
           const response = await axios.get(
-            `https://lms-backend-ol4a.onrender.com/courses/fetch/category-wise?categoryId=${category}&status=ACTIVE`
+            `https://lms-backend-cr9o.onrender.com/courses/fetch/category-wise?categoryId=${category}&status=ACTIVE`
           );
           
           setCourses(response.data.data);

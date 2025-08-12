@@ -34,7 +34,7 @@ const Registration = () => {
     console.log(formData)
 
     try {
-        const response = await axios.post(`https://lms-backend-ol4a.onrender.com/user/verifymail?email=${formData.emailId}`);
+        const response = await axios.post(`https://lms-backend-cr9o.onrender.com/user/verifymail?email=${formData.emailId}`);
         if (response.status === 200) {
           toast.success('📩 OTP sent to your email! Please check your inbox or spam folder.');
           navigate('/verify-otp', { state: { formData } });

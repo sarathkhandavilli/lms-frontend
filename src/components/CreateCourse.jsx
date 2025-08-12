@@ -28,7 +28,7 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          'https://lms-backend-ol4a.onrender.com/category/fetch/all?status=active'
+          'https://lms-backend-cr9o.onrender.com/category/fetch/all?status=active'
         );
         setCategories(response.data.data);
       } catch (error) {
@@ -60,7 +60,7 @@ const CreateCourse = ({ onClose, onCourseCreated }) => {
   formData.append('thumbnail', thumbnail);
 
   try {
-    const response = await axios.post('https://lms-backend-ol4a.onrender.com/courses/add', formData, {
+    const response = await axios.post('https://lms-backend-cr9o.onrender.com/courses/add', formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',

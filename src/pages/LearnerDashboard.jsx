@@ -15,7 +15,7 @@ const LearnerDashboard = () => {
   const fetchMyCourses = async () => {
     try {
       const response = await axios.get(
-        `https://lms-backend-ol4a.onrender.com/enrollment/fetch/learner-wise?learnerId=${learnerId}`,
+        `https://lms-backend-cr9o.onrender.com/enrollment/fetch/learner-wise?learnerId=${learnerId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCourses(response.data.data);
