@@ -13,6 +13,7 @@ const AddMentorDetails = () => {
     profilePic: null,
   });
 
+  const [previewPic, setPreviewPic] = useState(null);
   const [mentorDetails, setMentorDetails] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,10 +59,19 @@ const AddMentorDetails = () => {
 
   const handleMentorFormChange = (e) => {
     const { name, value, files } = e.target;
-    setMentorForm((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
-    }));
+    if (files) {
+      const file = files[0];
+      setMentorForm((prev) => ({
+        ...prev,
+        [name]: file,
+      }));
+      setPreviewPic(URL.createObjectURL(file));
+    } else {
+      setMentorForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
 
   const handleMentorSubmit = async (e) => {
@@ -90,6 +100,8 @@ const AddMentorDetails = () => {
 
       setMentorDetails(response.data.data);
       setShowForm(false);
+      setPreviewPic(null);
+      toast.success('Mentor details submitted successfully!');
     } catch (error) {
       console.error(error);
       toast.error('Error submitting mentor details');
@@ -106,12 +118,14 @@ const AddMentorDetails = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen text-white px-4">
+      <ToastContainer />
       {showForm ? (
         <form
           onSubmit={handleMentorSubmit}
           className="bg-white text-black rounded-lg shadow-xl p-8 w-full max-w-md space-y-4"
         >
           <h2 className="text-2xl font-semibold mb-4 text-center text-black">Add Mentor Details</h2>
+
           <input
             type="number"
             name="age"
@@ -120,6 +134,7 @@ const AddMentorDetails = () => {
             required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           />
+
           <input
             type="number"
             name="experience"
@@ -128,6 +143,7 @@ const AddMentorDetails = () => {
             required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           />
+
           <input
             type="text"
             name="qualification"
@@ -136,6 +152,7 @@ const AddMentorDetails = () => {
             required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           />
+
           <input
             type="text"
             name="profession"
@@ -144,14 +161,36 @@ const AddMentorDetails = () => {
             required
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           />
-          <input
-            type="file"
-            name="profilePic"
-            accept="image/*"
-            onChange={handleMentorFormChange}
-            required
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none"
-          />
+
+          {/* Styled Profile Pic Upload */}
+          <div className="w-full">
+            <label
+              htmlFor="profilePic"
+              className="block w-full text-center cursor-pointer bg-gray-200 hover:bg-gray-300 text-black py-2 rounded transition"
+            >
+              {mentorForm.profilePic ? mentorForm.profilePic.name : "📁 Choose Profile Picture"}
+            </label>
+
+            <input
+              id="profilePic"
+              type="file"
+              name="profilePic"
+              accept="image/*"
+              onChange={handleMentorFormChange}
+              required
+              className="hidden"
+            />
+          </div>
+
+          {/* Preview Image */}
+          {previewPic && (
+            <img
+              src={previewPic}
+              alt="Profile Preview"
+              className="mt-4 w-24 h-24 object-cover rounded-full mx-auto border border-gray-300"
+            />
+          )}
+
           <button
             type="submit"
             disabled={isSubmitting}
@@ -173,12 +212,14 @@ const AddMentorDetails = () => {
                 <MentorImage fileName={mentorDetails.profilePic} />
               </div>
             )}
+
             <div className="space-y-2 text-sm">
               <p><strong>Age:</strong> {mentorDetails.age}</p>
               <p><strong>Experience:</strong> {mentorDetails.experience} years</p>
               <p><strong>Qualification:</strong> {mentorDetails.qualification}</p>
               <p><strong>Profession:</strong> {mentorDetails.profession}</p>
             </div>
+
             <button
               onClick={handleUpdateClick}
               disabled={isUpdating}
