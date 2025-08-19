@@ -6,6 +6,7 @@ import ProfileAvatar from '../components/ProfileAvatar';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 
 const AdminDashboard = () => {
@@ -36,7 +37,7 @@ const AdminDashboard = () => {
     if (!window.confirm('Are you sure you want to delete this mentor?')) return;
 
     try {
-      await axios.delete(`https://lms-backend-cr9o.onrender.com/user/mentor/delete?mentorId=${mentorId}`, {
+      await api.delete(`user/mentor/delete?mentorId=${mentorId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -51,7 +52,7 @@ const AdminDashboard = () => {
 
   const handleDeleteCategory = async (categoryId) => {
     try {
-      await axios.delete(`https://lms-backend-cr9o.onrender.com/category/delete?categoryId=${categoryId}`, {
+      await api.delete(`category/delete?categoryId=${categoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -67,7 +68,7 @@ const AdminDashboard = () => {
   const showEnrollments = async () => {
     setView('enrollments');
     try {
-      const response = await axios.get(`https://lms-backend-cr9o.onrender.com/enrollment/fetch/all`, {
+      const response = await api.get(`enrollment/fetch/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -82,7 +83,7 @@ const AdminDashboard = () => {
     setView(fetchRole === 'LEARNER' ? 'learners' : 'mentors');
 
     try {
-      const response = await axios.get(`https://lms-backend-cr9o.onrender.com/user/fetch/role-wise?role=${fetchRole}`, {
+      const response = await api.get(`user/fetch/role-wise?role=${fetchRole}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -100,7 +101,7 @@ const AdminDashboard = () => {
   const fetchCategories = async () => {
     setView('categories');
     try {
-      const response = await axios.get('https://lms-backend-cr9o.onrender.com/category/fetch/all?status=active');
+      const response = await api.get('category/fetch/all?status=active');
       setCategories(response.data.data);
     } catch (error) {
       console.log(error);
@@ -164,7 +165,7 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {view === 'categories' &&
             categories.map((category, index) => (
-              <div key={index} className="border p-4 rounded shadow-sm flex flex-col justify-between">
+              <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm flex flex-col justify-between">
                 <h1 className="font-semibold text-lg truncate">{category.name}</h1>
                 <p className="text-sm text-gray-600 line-clamp-3">{category.description}</p>
                 <div className="flex gap-2 mt-4 flex-wrap">
@@ -187,7 +188,7 @@ const AdminDashboard = () => {
 
           {view === 'learners' &&
             learners.map((learner, index) => (
-              <div key={index} className="border p-4 rounded shadow-sm">
+              <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm">
                 <h2 className="font-medium text-base sm:text-lg">
                   {learner.firstName} {learner.lastName}
                 </h2>
@@ -199,7 +200,7 @@ const AdminDashboard = () => {
             mentors.map((mentor, index) => (
               <div
                 key={index}
-                className="border p-4 rounded shadow-sm flex flex-col sm:flex-row gap-4 items-start"
+                className="border p-4 rounded shadow-sm bg-gray-100 flex flex-col sm:flex-row gap-4 items-start"
               >
                 <ProfileAvatar
                   userId={mentor.id}
@@ -246,7 +247,7 @@ const AdminDashboard = () => {
 
           {view === 'enrollments' &&
             enrollments.map((enrollment, index) => (
-              <div key={index} className="border p-4 rounded shadow-sm">
+              <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm">
                 <h1 className="font-medium text-base sm:text-lg truncate">
                   Learner: {enrollment.learnerName}
                 </h1>

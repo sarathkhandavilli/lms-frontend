@@ -29,7 +29,7 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
     };
 
     try {
-      const response = await axios.post('https://lms-backend-cr9o.onrender.com/courses/section/add', payload, {
+      const response = await api.post('courses/section/add', payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'

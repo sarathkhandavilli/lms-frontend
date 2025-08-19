@@ -6,6 +6,7 @@ import CreateSection from '../components/CreateSection';
 import CreateTopic from '../components/CreateTopic';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -25,8 +26,8 @@ const CourseDetails = () => {
 
   const fetchCourseDetailsForLearner = async () => {
     try {
-      const response = await axios.get(
-        `https://lms-backend-cr9o.onrender.com/courses/fetch/course-user-id?cid=${id}&uid=${userId}`,
+      const response = await api.get(
+        `courses/fetch/course-user-id?cid=${id}&uid=${userId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCourseDetails(response.data.data);
@@ -38,8 +39,8 @@ const CourseDetails = () => {
 
   const fetchCourseDetails = async () => {
     try {
-      const response = await axios.get(
-        `https://lms-backend-cr9o.onrender.com/courses/fetch/course-id?courseId=${id}`
+      const response = await api.get(
+        `courses/fetch/course-id?courseId=${id}`
       );
       setCourseDetails(response.data.data);
     } catch (error) {
@@ -58,7 +59,7 @@ const CourseDetails = () => {
         type: courseDetails.type,
         amount: 0,
       };
-      await axios.post('https://lms-backend-cr9o.onrender.com/enrollment/enroll', data, {
+      await api.post('enrollment/enroll', data, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success('Enrolled successfully!');
@@ -112,11 +113,12 @@ const CourseDetails = () => {
         </h1>
 
         <div className="space-y-3 text-gray-700 text-sm sm:text-base">
+          <p><span className='font-semibold'>Mentor: </span>{courseDetails.mentorName}</p>
           <p><span className="font-semibold">Description:</span> {courseDetails.description}</p>
           <p><span className="font-semibold">Author Note:</span> {courseDetails.authorCourseNote}</p>
           <p>
             <span className="font-semibold">Price:</span>{' '}
-              {courseDetails.price === 0 ? (
+              {courseDetails.price === 0 || courseDetails.discountInPercent === 100 ? (
                 <span className="text-green-600 font-bold">Free</span>
               ) : (
                 <>

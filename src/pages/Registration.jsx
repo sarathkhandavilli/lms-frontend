@@ -4,6 +4,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 
 const Registration = () => {
@@ -34,7 +35,7 @@ const Registration = () => {
     console.log(formData)
 
     try {
-        const response = await axios.post(`https://lms-backend-cr9o.onrender.com/user/verifymail?email=${formData.emailId}`);
+        const response = await api.post(`user/verifymail?email=${formData.emailId}`);
         if (response.status === 200) {
           toast.success('📩 OTP sent to your email! Please check your inbox or spam folder.');
           navigate('/verify-otp', { state: { formData } });

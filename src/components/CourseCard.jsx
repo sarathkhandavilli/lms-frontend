@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../api';
 
 const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
   const role = localStorage.getItem('role');
@@ -12,7 +13,7 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
   return (
     <div className="bg-white border rounded-lg shadow-sm hover:shadow-lg transition duration-300 flex flex-col">
       <img
-        src={`https://lms-backend-cr9o.onrender.com/courses/fetch/${course.thumbnailName}`}
+        src={`${BASE_URL}/courses/fetch/${course.thumbnailName}`}
         alt={course.name}
         className="w-full h-40 object-cover rounded-t-lg"
       />

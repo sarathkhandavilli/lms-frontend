@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 const Payment = () => {
   const { state } = useLocation();
@@ -32,7 +33,7 @@ const Payment = () => {
     setIsProcessing(true);
 
     try {
-      await axios.post('https://lms-backend-cr9o.onrender.com/enrollment/enroll', formData, {
+      await api.post('enrollment/enroll', formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

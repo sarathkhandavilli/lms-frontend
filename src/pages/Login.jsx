@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Login = () => {
     setIsLoggingIn(true);
 
     try {
-      const response = await axios.post('https://lms-backend-cr9o.onrender.com/user/login', form);
+      const response = await api.post('user/login', form);
       const { token, role, userId, firstName, lastName } = response.data.data;
 
       localStorage.setItem('token', token);

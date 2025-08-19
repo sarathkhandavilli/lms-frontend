@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 
 const LearnerDashboard = () => {
@@ -14,8 +15,8 @@ const LearnerDashboard = () => {
 
   const fetchMyCourses = async () => {
     try {
-      const response = await axios.get(
-        `https://lms-backend-cr9o.onrender.com/enrollment/fetch/learner-wise?learnerId=${learnerId}`,
+      const response = await api.get(
+        `enrollment/fetch/learner-wise?learnerId=${learnerId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCourses(response.data.data);

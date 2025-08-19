@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CreateCourse from '../components/CreateCourse';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 
 const MentorDashboard = () => {
@@ -29,12 +30,13 @@ const MentorDashboard = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`https://lms-backend-cr9o.onrender.com/courses/delete?courseId=${courseId}&mentorId=${mentorId}`, {
+      await api.delete(`courses/delete?courseId=${courseId}&mentorId=${mentorId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Course deleted successfully');
-      fetchMentorDashboard();
       showMentorCourses();
+      fetchMentorDashboard();
+      
     } catch (error) {
       console.error(error);
       toast.error('Failed to delete course');
@@ -43,8 +45,8 @@ const MentorDashboard = () => {
 
   const fetchMentorDashboard = async () => {
     try {
-      const response = await axios.get(
-        `https://lms-backend-cr9o.onrender.com/courses/mentor/dashboard?mentorId=${mentorId}`,
+      const response = await api.get(
+        `courses/mentor/dashboard?mentorId=${mentorId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -58,8 +60,8 @@ const MentorDashboard = () => {
   const showMentorCourses = async () => {
     setView('courses');
     try {
-      const response = await axios.get(
-        `https://lms-backend-cr9o.onrender.com/courses/fetch/mentor-wise?mentorId=${mentorId}&status=ACTIVE`,
+      const response = await api.get(
+        `courses/fetch/mentor-wise?mentorId=${mentorId}&status=ACTIVE`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -74,8 +76,8 @@ const MentorDashboard = () => {
   const showEnrollmentsForMentor = async () => {
     setView('enrollments');
     try {
-      const response = await axios.get(
-        `https://lms-backend-cr9o.onrender.com/enrollment/fetch/mentor-wise?mentorId=${mentorId}`,
+      const response = await api.get(
+        `enrollment/fetch/mentor-wise?mentorId=${mentorId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

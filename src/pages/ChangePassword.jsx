@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 
 const ChangePassword = () => {
@@ -45,8 +46,8 @@ const ChangePassword = () => {
     }
 
     try {
-      const response = await axios.post(
-        `https://lms-backend-cr9o.onrender.com/forgotpassword/changePassword/${email}`,
+      const response = await api.post(
+        `forgotpassword/changePassword/${email}`,
         passwords
       );
 

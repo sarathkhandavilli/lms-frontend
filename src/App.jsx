@@ -16,9 +16,9 @@ import OtpVerification from './pages/OtpVerification';
 import ChangePassword from './pages/ChangePassword';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Analytics } from "@vercel/analytics/next"
 
 const App = () => {
-
 
   return (
     <>
@@ -81,6 +81,8 @@ const App = () => {
       </Routes>
 
     </Router>
+
+        <Analytics />
 
     <ToastContainer/>
     </>

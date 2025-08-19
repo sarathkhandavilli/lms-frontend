@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'; // Adjust path if needed
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 
 const OtpVerification = () => {
@@ -29,8 +30,8 @@ const OtpVerification = () => {
         if (!formData?.emailId || formData.emailId.trim() === "") {
           console.log('entered into  forgot password otp')
           // Forgot Password Flow
-          const response = await axios.post(
-            `https://lms-backend-cr9o.onrender.com/forgotpassword/verifyOtp/${otp}/${email}`
+          const response = await api.post(
+            `forgotpassword/verifyOtp/${otp}/${email}`
           );
           if (response.status === 200) {
             toast.success('✅ OTP verified! You can now reset your password.');
@@ -40,11 +41,11 @@ const OtpVerification = () => {
           console.log(formData)
           console.log('entered into registration otp')
           // Registration Flow
-          const response = await axios.post(
-            `https://lms-backend-cr9o.onrender.com/user/verifyotp/${otp}/${formData.emailId}`
+          const response = await api.post(
+            `user/verifyotp/${otp}/${formData.emailId}`
           );
           if (response.status === 200) {
-            await axios.post('https://lms-backend-cr9o.onrender.com/user/register', formData, {
+            await api.post('user/register', formData, {
               headers: { 'Content-Type': 'application/json' },
             });
             toast.success('🎉 Registration complete! Welcome aboard.');

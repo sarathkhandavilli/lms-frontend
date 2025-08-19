@@ -4,13 +4,12 @@ import Navbar from '../components/Navbar'; // Adjust path if needed
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import api from '../api';
 
 const EmailVerification = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -20,8 +19,8 @@ const EmailVerification = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(
-        `https://lms-backend-cr9o.onrender.com/forgotpassword/verifyMail?email=${email}`
+      const response = await api.post(
+        `forgotpassword/verifyMail?email=${email}`
       );
       
       if (response.status === 200) {

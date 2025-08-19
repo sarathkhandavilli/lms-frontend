@@ -67,7 +67,7 @@ A modern React-based frontend for the Learning Management System (LMS).
 
 If you want to use environment variables for your backend URL, add them in Netlify dashboard:
 
-- `VITE_BACKEND_URL`: URL of your backend API (e.g., `https://lms-backend-cr9o.onrender.com//`)
+- `VITE_BACKEND_URL`: URL of your backend API (e.g., `'/`)
 
 ## Troubleshooting
 

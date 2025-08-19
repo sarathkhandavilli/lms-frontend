@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
   const categoryId = id;
@@ -30,16 +31,16 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
     try {
       if (categoryId) {
         // Update
-        await axios.put(
-          'https://lms-backend-cr9o.onrender.com/category/update',
+        await api.put(
+          'category/update',
           { id: parseInt(categoryId), ...formData },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success('Category updated successfully!');
       } else {
         // Create
-        await axios.post(
-          'https://lms-backend-cr9o.onrender.com/category/add',
+        await api.post(
+          'category/add',
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );

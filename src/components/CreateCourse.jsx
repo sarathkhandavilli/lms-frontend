@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 const CreateCourse = ({ onClose }) => {
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ const CreateCourse = ({ onClose }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          'https://lms-backend-cr9o.onrender.com/category/fetch/all?status=active'
+        const response = await api.get(
+          'category/fetch/all?status=active'
         );
         setCategories(response.data.data);
       } catch (error) {
@@ -62,7 +63,7 @@ const CreateCourse = ({ onClose }) => {
     formData.append('thumbnail', thumbnail);
 
     try {
-      const response = await axios.post('https://lms-backend-cr9o.onrender.com/courses/add', formData, {
+      const response = await api.post('courses/add', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

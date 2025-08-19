@@ -3,6 +3,7 @@ import axios from 'axios';
 import MentorImage from '../components/MentorImage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 const AddMentorDetails = () => {
   const [mentorForm, setMentorForm] = useState({
@@ -22,11 +23,12 @@ const AddMentorDetails = () => {
   const mentorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
 
+  //fetches mentordetails from mentor_detail
   useEffect(() => {
     const fetchMentorFullProfile = async () => {
       try {
-        const response = await axios.get(
-          `https://lms-backend-cr9o.onrender.com/user/fetch/mentor-id?mentorId=${mentorId}`,
+        const response = await api.get(
+          `user/fetch/mentor-id?mentorId=${mentorId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -87,8 +89,7 @@ const AddMentorDetails = () => {
     form.append('mentorId', mentorId);
 
     try {
-      const response = await axios.post(
-        'https://lms-backend-cr9o.onrender.com/user/mentordetail/add',
+      const response = await api.post('/user/mentordetail/add',
         form,
         {
           headers: {
@@ -118,7 +119,6 @@ const AddMentorDetails = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen text-white px-4">
-      <ToastContainer />
       {showForm ? (
         <form
           onSubmit={handleMentorSubmit}

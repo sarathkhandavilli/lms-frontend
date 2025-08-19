@@ -5,7 +5,7 @@ import CourseCard from '../components/CourseCard';
 import Navbar from '../components/Navbar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import api from '../api';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -25,8 +25,8 @@ const HomePage = () => {
 
   const fetchAllcourses = async () => {
     try {
-      const response = await axios.get(
-        'https://lms-backend-cr9o.onrender.com/courses/fetch/status-wise?status=active'
+      const response = await api.get(
+        'courses/fetch/status-wise?status=active'
       );
       setCourses(response.data.data);
     } catch (error) {
@@ -41,8 +41,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(
-          'https://lms-backend-cr9o.onrender.com/category/fetch/all?status=active'
+        const response = await api.get(
+          'category/fetch/all?status=active'
         );
         setCategories(response.data.data);
       } catch (error) {
@@ -57,8 +57,8 @@ const HomePage = () => {
     const trimmedName = name.trim();
     if (trimmedName !== '') {
       try {
-        const response = await axios.get(
-          `https://lms-backend-cr9o.onrender.com/courses/fetch/name-wise?courseName=${trimmedName}&status=active`
+        const response = await api.get(
+          `courses/fetch/name-wise?courseName=${trimmedName}&status=active`
         );
         setCourses(response.data.data);
       } catch (error) {
@@ -71,8 +71,8 @@ const HomePage = () => {
     const fetchCategoryCourses = async () => {
       if (category !== 0) {
         try {
-          const response = await axios.get(
-            `https://lms-backend-cr9o.onrender.com/courses/fetch/category-wise?categoryId=${category}&status=ACTIVE`
+          const response = await api.get(
+            `courses/fetch/category-wise?categoryId=${category}&status=ACTIVE`
           );
           
           setCourses(response.data.data);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 
 const ProfileAvatar = ({  userId, firstName, lastName, profilePic }) => {
@@ -21,8 +22,8 @@ const ProfileAvatar = ({  userId, firstName, lastName, profilePic }) => {
         let fileName = profilePic;
 
         if (Role === 'MENTOR' && !fileName) {
-          const profileRes = await axios.get(
-            `https://lms-backend-cr9o.onrender.com/user/fetch/mentor-id?mentorId=${UserId}`,
+          const profileRes = await api.get(
+            `user/fetch/mentor-id?mentorId=${UserId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -31,8 +32,8 @@ const ProfileAvatar = ({  userId, firstName, lastName, profilePic }) => {
         }
 
         if (fileName ) {
-          const imageRes = await axios.get(
-            `https://lms-backend-cr9o.onrender.com/user/fetch/${fileName}`,
+          const imageRes = await api.get(
+            `user/fetch/${fileName}`,
             {
               responseType: 'blob',
             }
