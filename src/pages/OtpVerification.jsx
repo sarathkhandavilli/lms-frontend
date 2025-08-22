@@ -8,6 +8,9 @@ import api from '../api';
 
 
 const OtpVerification = () => {
+
+  const role = localStorage.getItem('role');
+
   const navigate = useNavigate();
   const location = useLocation();
   const email = location?.state?.email;
@@ -45,11 +48,21 @@ const OtpVerification = () => {
             `user/verifyotp/${otp}/${formData.emailId}`
           );
           if (response.status === 200) {
-            await api.post('user/register', formData, {
-              headers: { 'Content-Type': 'application/json' },
-            });
-            toast.success('🎉 Registration complete! Welcome aboard.');
-            navigate('/', { state: { formData } });
+            try {
+              await api.post('user/register', formData, {
+                headers: { 'Content-Type': 'application/json' },
+              });
+
+              if (role?.length === 5) {
+                toast.success('✅ Admin registered!');
+              } else {
+                toast.success('🎉 Registration complete! Welcome aboard.');
+              }
+
+              navigate('/', { state: { formData } });
+            } catch (regErr) {
+              toast.error('❌ Registration failed. Please try again.');
+            }
           }
         }
       } catch (err) {

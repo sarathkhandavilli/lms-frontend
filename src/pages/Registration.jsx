@@ -161,7 +161,7 @@ const Registration = () => {
             }`}
           >
             {isSendingOtp
-              ? 'Sending OTP...'
+              ? 'Validating...'
               : role === 'ADMIN'
               ? 'Register Admin'
               : 'Sign Up'}
