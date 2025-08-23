@@ -58,10 +58,10 @@ const Registration = () => {
   return (
     <>
       <Navbar />
-      <div className="flex items-center -mt-8 justify-center min-h-screen bg-gray-100">
+      <div className="h-screen w-screen fixed top-0 left-0 mt-12 flex items-center justify-center bg-gray-100">
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-lg shadow-md p-6 w-full max-w-sm" // reduced padding & width
+          className="bg-white rounded-lg shadow-md p-6 w-full max-w-sm"
         >
           <h2 className="text-lg font-semibold flex justify-center mb-2">
             {role === 'ADMIN' ? 'Register Admin' : 'Sign Up'}

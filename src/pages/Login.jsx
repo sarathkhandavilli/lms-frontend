@@ -61,7 +61,7 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen -mt-20 flex items-center justify-center pt-24">
+      <div className="h-screen w-screen fixed top-0 mt-4 left-0 flex items-center justify-center bg-gray-100">
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg space-y-6"
