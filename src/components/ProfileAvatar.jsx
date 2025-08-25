@@ -61,11 +61,11 @@ const ProfileAvatar = ({  userId, firstName, lastName, profilePic }) => {
 
   const initials =
     Role === 'ADMIN'
-      ? `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase()
+      ? 'A'
       : `${FirstName?.charAt(0) || ''}${LastName?.charAt(0) || ''}`.toUpperCase();
 
   return (
-    <div className="w-10 h-10 rounded-full bg-indigo-50 text-black flex items-center justify-center font-bold text-sm">
+    <div className="w-10 h-10 rounded-full bg-indigo-50 text-black flex items-center justify-center font-bold text-2xl">
       {initials}
     </div>
   );

@@ -33,7 +33,8 @@ const Login = () => {
       localStorage.setItem('firstName', firstName);
       localStorage.setItem('lastName', lastName);
 
-      toast.success(`✅ Welcome back, ${firstName}!`);
+      toast.success(`✅ Welcome back, ${firstName || 'Admin'}!`);
+
 
       if (role === 'MENTOR') {
         navigate('/mentor', { state: { mentorId: userId } });
