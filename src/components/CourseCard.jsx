@@ -22,8 +22,7 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
           <h3 className="text-md font-semibold text-black">{course.name}</h3>
           <div className="flex justify-between items-center mt-4 text-black">
             <span className="font-bold text-sm">
-              
-              ₹{ (course.price === 0 || course.discountInPercent === 100 )? 'Free' : course.price.toFixed(2)}
+              ₹{ (course.price === 0 || course.discountInPercent === 100 )? 'Free' : (course.price-(course.price*course.discountInPercent/100)).toFixed(2)}
             </span>
           </div>
         </div>

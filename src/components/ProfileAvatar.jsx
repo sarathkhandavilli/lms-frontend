@@ -65,7 +65,7 @@ const ProfileAvatar = ({  userId, firstName, lastName, profilePic }) => {
       : `${FirstName?.charAt(0) || ''}${LastName?.charAt(0) || ''}`.toUpperCase();
 
   return (
-    <div className="w-10 h-10 rounded-full bg-indigo-50 text-black flex items-center justify-center font-bold text-2xl">
+    <div className={`w-10 h-10 rounded-full bg-indigo-50 text-black flex items-center justify-center font-bold ${initials ==='A' ? 'text-2xl' : 'text-md' }`}>
       {initials}
     </div>
   );

@@ -10,7 +10,8 @@ import api from '../api';
 const Registration = () => {
   const navigate = useNavigate();
 
-  const role = localStorage.getItem('role'); // Get role from localStorage
+  const role = localStorage.getItem('role');
+  
   const [isSendingOtp, setIsSendingOtp] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -66,6 +67,7 @@ const Registration = () => {
           <h2 className="text-lg font-semibold flex justify-center mb-2">
             {role === 'ADMIN' ? 'Register Admin' : 'Sign Up'}
           </h2>
+
           {/* Conditionally render the description */}
           {role !== 'ADMIN' && (
             <p className="text-gray-500 mb-6 text-sm">
@@ -96,10 +98,11 @@ const Registration = () => {
                 name="emailId"
                 type="email"
                 className="w-full px-3 py-2 bg-gray-100 rounded-md focus:outline-none"
-                placeholder="Enter your email"
+                placeholder="Enter your email to get otp"
                 onChange={handleChange}
                 required
               />
+              
               <input
                 name="password"
                 type="password"
@@ -150,6 +153,10 @@ const Registration = () => {
               />
             </div>
           )}
+
+          <p className="text-xs text-gray-500 italic text-center mt-4">
+            An OTP will be sent to the provided email for verification.
+          </p>
 
           <button
             type="submit"

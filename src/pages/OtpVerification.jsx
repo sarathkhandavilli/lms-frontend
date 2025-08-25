@@ -27,12 +27,12 @@ const OtpVerification = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError(''); // Clear any previous error message
+    setError('');
 
     try {
         if (!formData?.emailId || formData.emailId.trim() === "") {
           console.log('entered into  forgot password otp')
-          // Forgot Password Flow
+
           const response = await api.post(
             `forgotpassword/verifyOtp/${otp}/${email}`
           );
@@ -43,7 +43,6 @@ const OtpVerification = () => {
         } else {
           console.log(formData)
           console.log('entered into registration otp')
-          // Registration Flow
           const response = await api.post(
             `user/verifyotp/${otp}/${formData.emailId}`
           );
