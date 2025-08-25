@@ -11,7 +11,7 @@ const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
     youtubeUrl: ''
   });
 
-  const [isAdding, setIsAdding] = useState(false); // NEW
+  const [isAdding, setIsAdding] = useState(false);
 
   const token = localStorage.getItem('token');
 

@@ -217,7 +217,7 @@ const CourseDetails = () => {
                               <p className="text-sm text-gray-700">{topic.description}</p>
                               {( (isEnrolled || role === 'MENTOR' || parseInt(courseDetails.mentorId) === parseInt(userId) ) && (topic.youtubeUrl !== null)) && (
                                 <p className="mt-1 text-black">
-                                  ▶️ <a href={topic.youtubeUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">Watch Video</a>
+                                   ▷ <a href={topic.youtubeUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-black">Watch Video</a>
                                 </p>
                               )}
                             </li>

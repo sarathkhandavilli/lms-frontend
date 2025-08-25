@@ -18,7 +18,7 @@ const CreateCourse = ({ onClose }) => {
   const [thumbnail, setThumbnail] = useState(null);
   const [categoryId, setCategoryId] = useState(0);
   const [categories, setCategories] = useState([]);
-  const [isCreating, setIsCreating] = useState(false); // NEW
+  const [isCreating, setIsCreating] = useState(false)
 
   const mentorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');

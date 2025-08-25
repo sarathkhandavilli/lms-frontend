@@ -17,12 +17,14 @@ import ChangePassword from './pages/ChangePassword';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
 
   return (
     <>
     <Router>
+      <ScrollToTop />
       <Routes>
 
         <Route path="/" element={<HomePage />} />

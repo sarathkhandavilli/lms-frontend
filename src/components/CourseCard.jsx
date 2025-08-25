@@ -15,7 +15,7 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
       <img
         src={`${BASE_URL}/courses/fetch/${course.thumbnailName}`}
         alt={course.name}
-        className="w-full h-40 object-cover rounded-t-lg"
+        className="w-full h-40  rounded-t-lg"
       />
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
@@ -29,6 +29,8 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
         </div>
 
         <div className="mt-4 flex flex-col gap-2">
+          
+          {/* handling viewcourse button for mentor in the home page and mentor dashboard */}
           { (role !== 'MENTOR' || !showActions ) && 
           <button
             onClick={goToCourse}
@@ -37,7 +39,7 @@ const CourseCard = ({ course, onEdit, onDelete, showActions }) => {
             View Course
           </button> }
           
-
+          {/* displaying the edit and delete buttons for mentors in mentor dashboard  */}
           {role === 'MENTOR' && showActions && (
             <div className="flex justify-between gap-2">
               <button

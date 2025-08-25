@@ -93,7 +93,7 @@ const AdminDashboard = () => {
         ? setLearners(response.data.data)
         : setMentors(response.data.data);
     } catch (error) {
-      toast.error(`Failed to fetch ${fetchRole}s`);
+      // toast.error(`Failed to fetch ${fetchRole}s`);
       console.log(error);
     }
   };

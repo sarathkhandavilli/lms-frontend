@@ -11,13 +11,10 @@ const MentorImage = ({ fileName }) => {
       try {
         const token = localStorage.getItem('token');
         const response = await api.get(`user/fetch/${fileName}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          responseType: 'blob',
         });
 
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
+        const url = URL.createObjectURL(response.data);
         setImageUrl(url);
       } catch (error) {
         console.error('Error loading image:', error);

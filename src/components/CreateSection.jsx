@@ -10,7 +10,7 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
     description: ''
   });
 
-  const [isAdding, setIsAdding] = useState(false); // NEW
+  const [isAdding, setIsAdding] = useState(false); 
 
   const token = localStorage.getItem('token');
   const mentorId = localStorage.getItem('userId');
