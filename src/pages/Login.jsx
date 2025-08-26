@@ -124,29 +124,35 @@ const Login = () => {
               Forgot password?
             </button>
 
-            <button type='button'
-            name='admin@lms.com'
-            value='password_Admin'
-            onClick={setUser}
-            className="text-black underline hover:text-black"
-            >
-              login as admin
-            </button>
-            <button type='button'
-            name='brad@traversymedia.com'
-            value='password_Brad'
-            onClick={setUser}
-            className="text-black underline hover:text-black"
-            >
-              login as mentor
-            </button>
-            <button type='button'
-            onClick={setUser}
-            name='alice.smith@example.com'
-            value='password_Alice'
-            className="text-black underline hover:text-black">
-              login as learner
-            </button>
+            <h1>Demo Accounts</h1>
+
+            <div className='flex justify-center gap-2 '>
+
+              <button type='button'
+              name='admin@lms.com'
+              value='password_Admin'
+              onClick={setUser}
+              className="text-black underline hover:text-black"
+              >
+                 admin
+              </button>
+              <button type='button'
+              name='brad@traversymedia.com'
+              value='password_Brad'
+              onClick={setUser}
+              className="text-black underline hover:text-black"
+              >
+                 mentor
+              </button>
+              <button type='button'
+              onClick={setUser}
+              name='alice.smith@example.com'
+              value='password_Alice'
+              className="text-black underline hover:text-black">
+                 learner
+              </button>
+
+            </div>
           </div>
         </form>
       </div>
