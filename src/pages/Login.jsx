@@ -11,6 +11,10 @@ const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
+  const setUser = (e) => {
+    setForm({email: e.target.name, password: e.target.value})
+  }
+
   const handleForgotPassword = () => {
     navigate('/forgot-password');
   };
@@ -111,13 +115,37 @@ const Login = () => {
             {isLoggingIn ? 'Logging in...' : 'Login'}
           </button>
 
-          <div className="text-center">
+          <div className="flex flex-col text-center">
             <button
               type="button"
               onClick={handleForgotPassword}
               className="text-black underline hover:text-black"
             >
               Forgot password?
+            </button>
+
+            <button type='button'
+            name='admin@lms.com'
+            value='password_Admin'
+            onClick={setUser}
+            className="text-black underline hover:text-black"
+            >
+              login as admin
+            </button>
+            <button type='button'
+            name='brad@traversymedia.com'
+            value='password_Brad'
+            onClick={setUser}
+            className="text-black underline hover:text-black"
+            >
+              login as mentor
+            </button>
+            <button type='button'
+            onClick={setUser}
+            name='alice.smith@example.com'
+            value='password_Alice'
+            className="text-black underline hover:text-black">
+              login as learner
             </button>
           </div>
         </form>
