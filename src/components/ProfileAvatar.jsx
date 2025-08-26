@@ -59,10 +59,12 @@ const ProfileAvatar = ({  userId, firstName, lastName, profilePic }) => {
     );
   }
 
-  const initials =
+  var initials =
     Role === 'ADMIN'
-      ? 'A'
+      ? `${firstName?.charAt(0) || ''}${lastName?.charAt(0) || ''}`.toUpperCase()
       : `${FirstName?.charAt(0) || ''}${LastName?.charAt(0) || ''}`.toUpperCase();
+
+  initials = firstName === '' ? 'A' : initials
 
   return (
     <div className={`w-10 h-10 rounded-full bg-indigo-50 text-black flex items-center justify-center font-bold ${initials ==='A' ? 'text-2xl' : 'text-md' }`}>
