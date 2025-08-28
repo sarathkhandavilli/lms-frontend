@@ -57,7 +57,7 @@ const AddMentorDetails = () => {
     };
 
     fetchMentorFullProfile();
-  }, [mentorId, token]);
+  }, [mentorId, token, isSubmitting]);
 
   const handleMentorFormChange = (e) => {
     const { name, value, files } = e.target;
@@ -98,8 +98,6 @@ const AddMentorDetails = () => {
           },
         }
       );
-
-      setMentorDetails(response.data.data);
       setShowForm(false);
       setPreviewPic(null);
       toast.success('Mentor details submitted successfully!');

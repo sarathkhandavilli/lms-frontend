@@ -33,11 +33,11 @@ const AdminDashboard = () => {
     setShowUpdateModal(true);
   };
 
-  const handleDeleteMentor = async (mentorId) => {
+  const handleDeleteMentor = async (mentorId,mentorImageName) => {
     if (!window.confirm('Are you sure you want to delete this mentor?')) return;
 
     try {
-      await api.delete(`user/mentor/delete?mentorId=${mentorId}`, {
+      await api.delete(`user/mentor/delete?mentorId=${mentorId}&mentorImageName=${mentorImageName}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -213,13 +213,15 @@ const AdminDashboard = () => {
                   <h2 className="font-medium text-lg truncate">
                     {mentor.firstName} {mentor.lastName}
                   </h2>
+                  <p className="text-sm text-gray-600 truncate">{mentor.emailId}</p>
+                      <p className="text-sm text-gray-600">Phone: {mentor.phoneNo}</p>
 
                   {!mentor.mentorDetail || mentor.mentorDetail.id === 0 ? (
+                    
                     <p>He hasn't uploaded details</p>
                   ) : (
                     <>
-                      <p className="text-sm text-gray-600 truncate">{mentor.emailId}</p>
-                      <p className="text-sm text-gray-600">Phone: {mentor.phoneNo}</p>
+                      
                       <p className="mt-2 text-sm">
                         <strong>Age:</strong> {mentor.mentorDetail.age} <br />
                         <strong>Experience:</strong> {mentor.mentorDetail.experience} yrs
@@ -236,7 +238,7 @@ const AdminDashboard = () => {
                   <div className="flex gap-2 mt-4 flex-wrap">
                     <button
                       className="bg-black border px-3 py-1 rounded text-white hover:bg-zinc-800 text-sm"
-                      onClick={() => handleDeleteMentor(mentor.id)}
+                      onClick={() => handleDeleteMentor(mentor.id,mentor.mentorDetail?.profilePic)}
                     >
                       Delete
                     </button>

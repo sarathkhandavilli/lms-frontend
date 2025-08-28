@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
 const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
+
+  const mentorId = localStorage.getItem('userId');
+
+
   const [sectionData, setSectionData] = useState({
     sectionNo: '',
     name: '',
-    description: ''
+    description: '',
+    mentorId: mentorId
   });
 
   const [isAdding, setIsAdding] = useState(false); 
 
   const token = localStorage.getItem('token');
-  const mentorId = localStorage.getItem('userId');
 
   const handleChange = (e) => {
     setSectionData({ ...sectionData, [e.target.name]: e.target.value });

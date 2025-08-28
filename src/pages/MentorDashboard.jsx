@@ -25,12 +25,12 @@ const MentorDashboard = () => {
     navigate(`/course/${id}`);
   };
 
-  const deleteCourse = async (courseId) => {
+  const deleteCourse = async (courseId,categoryId,thumbnailName) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this course?");
     if (!confirmDelete) return;
 
     try {
-      await api.delete(`courses/delete?courseId=${courseId}&mentorId=${mentorId}`, {
+      await api.delete(`courses/delete?courseId=${courseId}&mentorId=${mentorId}&categoryId=${categoryId}&thumbnailName=${thumbnailName}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       toast.success('Course deleted successfully');
@@ -173,7 +173,7 @@ const MentorDashboard = () => {
                         key={course.id}
                         course={course}
                         showActions={true}
-                        onDelete={ () => deleteCourse(course.id)}
+                        onDelete={ () => deleteCourse(course.id,course.categoryId,course.thumbnailName)}
                         onEdit={() => navigate(`/course/${course.id}`)}
                       />
                     ))}

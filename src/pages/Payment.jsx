@@ -20,6 +20,7 @@ const Payment = () => {
     amount: state?.amount || 0,
     courseId: state?.courseId,
     learnerId: state?.learnerId,
+    mentorId: state?.mentorId,
     type: state?.type,
   });
 

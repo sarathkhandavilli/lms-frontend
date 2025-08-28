@@ -147,6 +147,7 @@ const CourseDetails = () => {
                 navigate(`/payment`, {
                   state: {
                     courseId: courseDetails.courseId,
+                    mentorId: courseDetails.mentorId,
                     learnerId: parseInt(userId),
                     amount: discountedPrice,
                     type: courseDetails.type,
@@ -246,6 +247,7 @@ const CourseDetails = () => {
         <CreateTopic
           sectionId={selectedSectionId}
           onClose={() => setShowTopicModal(false)}
+          courseId = {id}
           onTopicCreated={() => fetchCourseDetailsForLearner()}
         />
       )}

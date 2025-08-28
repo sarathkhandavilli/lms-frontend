@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import api from '../api';
 
-const CreateTopic = ({ sectionId, onClose, onTopicCreated }) => {
+const CreateTopic = ({ courseId, sectionId, onClose, onTopicCreated }) => {
+
+  const mentorId = localStorage.getItem("userId");
+
   const [topicData, setTopicData] = useState({
     topicNo: '',
     name: '',
     description: '',
-    youtubeUrl: ''
+    youtubeUrl: '',
+    mentorId:mentorId,
+    courseId:courseId
   });
 
   const [isAdding, setIsAdding] = useState(false);
