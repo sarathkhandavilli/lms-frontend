@@ -13,10 +13,13 @@ const LearnerDashboard = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
+  let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+
   const fetchMyCourses = async () => {
     try {
       const response = await api.get(
-        `enrollment/fetch/learner-wise?learnerId=${learnerId}`,
+        `enrollment/fetch/learner-wise?learnerId=${learnerId}&userTimeZone=${userTimeZone}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCourses(response.data.data);
@@ -63,7 +66,7 @@ const LearnerDashboard = () => {
                 </p>
                 <p className="text-sm text-gray-700">
                   <strong>Enrollment Time:</strong>{' '}
-                  {new Date(enrollment.enrollmentTime).toLocaleString()}
+                  {enrollment.enrollmentTime}
                 </p>
               </div>
             ))}

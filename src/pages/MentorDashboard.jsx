@@ -73,11 +73,14 @@ const MentorDashboard = () => {
     }
   };
 
+  let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  console.log(userTimeZone)
+
   const showEnrollmentsForMentor = async () => {
     setView('enrollments');
     try {
       const response = await api.get(
-        `enrollment/fetch/mentor-wise?mentorId=${mentorId}`,
+        `enrollment/fetch/mentor-wise?mentorId=${mentorId}&userTimeZone=${userTimeZone}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

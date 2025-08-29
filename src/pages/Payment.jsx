@@ -61,7 +61,7 @@ const Payment = () => {
             placeholder="1234 5678 9012 3456"
             value={formData.cardNo}
             onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
+            className="w-full border px-3 py-2 rounded" maxLength={16}
             required
           />
         </div>
@@ -86,14 +86,14 @@ const Payment = () => {
               placeholder="123"
               value={formData.cvv}
               onChange={handleChange}
-              className="w-full border px-3 py-2 rounded"
+              className="w-full border px-3 py-2 rounded" maxLength={3}
               required
             />
           </div>
           <div className="flex-1">
             <label className="block font-medium">Expiry Date</label>
             <input
-              type="text"
+              type='month'
               name="expiryDate"
               placeholder="MM/YY"
               value={formData.expiryDate}
