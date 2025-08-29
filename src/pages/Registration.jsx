@@ -32,6 +32,12 @@ const Registration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.emailId.endsWith('@gmail.com')) {
+    toast.warn('⚠️ Please use a Gmail address (must end with @gmail.com).');
+    return;
+  }
+
     setIsSendingOtp(true)
     console.log(formData)
 
