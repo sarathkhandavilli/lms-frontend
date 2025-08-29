@@ -29,6 +29,12 @@ const CreateTopic = ({ courseId, sectionId, onClose, onTopicCreated }) => {
     if (isAdding) return; // Prevent double submission
     setIsAdding(true);
 
+    if (!topicData.name || !topicData.topicNo || !topicData.description || topicData.youtubeUrl) {
+      toast.info('please fill all required fields!')
+      setIsAdding(false);
+      return ;
+    }
+
     const payload = {
       ...topicData,
       sectionId: parseInt(sectionId)

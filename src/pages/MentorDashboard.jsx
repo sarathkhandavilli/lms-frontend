@@ -18,6 +18,7 @@ const MentorDashboard = () => {
   const [enrollments, setEnrollments] = useState([]);
   const [view, setView] = useState('courses');
   const [showModal, setShowModal] = useState(false);
+  const [isLoading,setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -59,6 +60,7 @@ const MentorDashboard = () => {
 
   const showMentorCourses = async () => {
     setView('courses');
+    setIsLoading(true);
     try {
       const response = await api.get(
         `courses/fetch/mentor-wise?mentorId=${mentorId}&status=ACTIVE`,
@@ -70,6 +72,8 @@ const MentorDashboard = () => {
       setMentorCourses(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,6 +82,7 @@ const MentorDashboard = () => {
 
   const showEnrollmentsForMentor = async () => {
     setView('enrollments');
+    setIsLoading(true)
     try {
       const response = await api.get(
         `enrollment/fetch/mentor-wise?mentorId=${mentorId}&userTimeZone=${userTimeZone}`,
@@ -88,6 +93,8 @@ const MentorDashboard = () => {
       setEnrollments(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -165,46 +172,56 @@ const MentorDashboard = () => {
 
           <div>
             {view === 'courses' && (
-              <>
-                <h3 className="font-bold mb-2">My Courses</h3>
-                {mentorCourses.length === 0 ? (
-                  <p>No courses created.</p>
-                ) : (
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {mentorCourses.map((course) => (
-                      <CourseCard
-                        key={course.id}
-                        course={course}
-                        showActions={true}
-                        onDelete={ () => deleteCourse(course.id,course.categoryId,course.thumbnailName)}
-                        onEdit={() => navigate(`/course/${course.id}`)}
-                      />
-                    ))}
-                  </ul>
-                )}
-              </>
+              isLoading ? (
+                <div>Fetching Courses...</div>
+              ) : (
+                <>
+                  <h3 className="font-bold mb-2">My Courses</h3>
+                  {mentorCourses.length === 0 ? (
+                    <p>No courses created.</p>
+                  ) : (
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                      {mentorCourses.map((course) => (
+                        <CourseCard
+                          key={course.id}
+                          course={course}
+                          showActions={true}
+                          onDelete={() => deleteCourse(course.id, course.categoryId, course.thumbnailName)}
+                          onEdit={() => navigate(`/course/${course.id}`)}
+                        />
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )
             )}
 
             {view === 'enrollments' && (
-              <>
-                <h3 className="font-bold mb-2">Enrollments</h3>
-                {enrollments.length === 0 ? (
-                  <p>No enrollments found.</p>
-                ) : (
-                  <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {enrollments.map((enrollment, index) => (
-                      <li key={index} className="border p-4 rounded bg-gray-50">
-                        <p><strong>Learner:</strong> {enrollment.learnerName}</p>
-                        <p><strong>Amount:</strong> ₹{enrollment.amount}</p>
-                        <p><strong>Enrolled On:</strong> {enrollment.enrolledTime}</p>
-                        <p><strong>Course:</strong> {enrollment.courseName}</p>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </>
+              
+              isLoading ? (
+                <div>Fetching your enrollments...</div>
+              ) : (
+                <>
+                  <h3 className="font-bold mb-2">Enrollments</h3>
+                  {enrollments.length === 0 ? (
+                    <p>No enrollments found.</p>
+                  ) : (
+                    <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {enrollments.map((enrollment, index) => (
+                        <li key={index} className="border p-4 rounded bg-gray-50">
+                          <p><strong>Learner:</strong> {enrollment.learnerName}</p>
+                          <p><strong>Amount:</strong> ₹{enrollment.amount}</p>
+                          <p><strong>Enrolled On:</strong> {enrollment.enrolledTime}</p>
+                          <p><strong>Course:</strong> {enrollment.courseName}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              )
             )}
           </div>
+
         </div>
       </div>
 

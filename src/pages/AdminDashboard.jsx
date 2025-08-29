@@ -17,6 +17,7 @@ const AdminDashboard = () => {
   const [view, setView] = useState('categories');
   const [mentors, setMentors] = useState([]);
   const navigate = useNavigate();
+  const [isLoading,setIsLoading] = useState(false)
 
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -51,6 +52,9 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteCategory = async (categoryId) => {
+    if (!window.confirm('Are you sure you want to delete this category?')) return;
+
+    
     try {
       await api.delete(`category/delete?categoryId=${categoryId}`, {
         headers: {
@@ -67,6 +71,7 @@ const AdminDashboard = () => {
 
   const showEnrollments = async () => {
     setView('enrollments');
+    setIsLoading(true)
     try {
       const response = await api.get(`enrollment/fetch/all`, {
         headers: {
@@ -76,11 +81,14 @@ const AdminDashboard = () => {
       setEnrollments(response.data.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
   const fetchUsers = async (fetchRole) => {
     setView(fetchRole === 'LEARNER' ? 'learners' : 'mentors');
+    setIsLoading(true)
 
     try {
       const response = await api.get(`user/fetch/role-wise?role=${fetchRole}`, {
@@ -95,6 +103,8 @@ const AdminDashboard = () => {
     } catch (error) {
       // toast.error(`Failed to fetch ${fetchRole}s`);
       console.log(error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -163,102 +173,122 @@ const AdminDashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {view === 'categories' &&
-            categories.map((category, index) => (
-              <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm flex flex-col justify-between">
-                <h1 className="font-semibold text-lg truncate">{category.name}</h1>
-                <p className="text-sm text-gray-600 line-clamp-3">{category.description}</p>
-                <div className="flex gap-2 mt-4 flex-wrap">
-                  <button
-                    className="bg-black border px-3 py-1 rounded text-white hover:bg-zinc-800 text-sm"
-                    onClick={() => handleUpdateCategory(category)}
+            {view === 'categories' && (
+              isLoading ? (
+                <div>Fetching Categories...</div>
+              ) : (
+                categories.map((category, index) => (
+                  <div
+                    key={index}
+                    className="border p-4 bg-gray-100 rounded shadow-sm flex flex-col justify-between"
                   >
-                    Update
-                  </button>
+                    <h1 className="font-semibold text-lg truncate">{category.name}</h1>
+                    <p className="text-sm text-gray-600 line-clamp-3">{category.description}</p>
+                    <div className="flex gap-2 mt-4 flex-wrap">
+                      <button
+                        className="bg-black border px-3 py-1 rounded text-white hover:bg-zinc-800 text-sm"
+                        onClick={() => handleUpdateCategory(category)}
+                      >
+                        Update
+                      </button>
+                      <button
+                        className="bg-black border px-3 py-1 rounded text-white hover:bg-zinc-800 text-sm"
+                        onClick={() => handleDeleteCategory(category.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )
+            )}
 
-                  <button
-                    className="bg-black border px-3 py-1 rounded text-white hover:bg-zinc-800 text-sm"
-                    onClick={() => handleDeleteCategory(category.id)}
+            {view === 'learners' && (
+              isLoading ? (
+                <div>Fetching Learners...</div>
+              ) : (
+                learners.map((learner, index) => (
+                  <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm">
+                    <h2 className="font-medium text-base sm:text-lg">
+                      {learner.firstName} {learner.lastName}
+                    </h2>
+                    <p className="text-sm text-gray-600 truncate">{learner.emailId}</p>
+                  </div>
+                ))
+              )
+            )}
+
+            {view === 'mentors' && (
+              isLoading ? (
+                <div>Fetching Mentors...</div>
+              ) : (
+                mentors.map((mentor, index) => (
+                  <div
+                    key={index}
+                    className="border p-4 rounded shadow-sm bg-gray-100 flex flex-col sm:flex-row gap-4 items-start"
                   >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-
-          {view === 'learners' &&
-            learners.map((learner, index) => (
-              <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm">
-                <h2 className="font-medium text-base sm:text-lg">
-                  {learner.firstName} {learner.lastName}
-                </h2>
-                <p className="text-sm text-gray-600 truncate">{learner.emailId}</p>
-              </div>
-            ))}
-
-          {view === 'mentors' &&
-            mentors.map((mentor, index) => (
-              <div
-                key={index}
-                className="border p-4 rounded shadow-sm bg-gray-100 flex flex-col sm:flex-row gap-4 items-start"
-              >
-                <ProfileAvatar
-                  userId={mentor.id}
-                  firstName={mentor.firstName}
-                  lastName={mentor.lastName}
-                  profilePic={mentor.mentorDetail?.profilePic}
-                />
-
-                <div className="flex-1 min-w-0">
-                  <h2 className="font-medium text-lg truncate">
-                    {mentor.firstName} {mentor.lastName}
-                  </h2>
-                  <p className="text-sm text-gray-600 truncate">{mentor.emailId}</p>
+                    <ProfileAvatar
+                      userId={mentor.id}
+                      firstName={mentor.firstName}
+                      lastName={mentor.lastName}
+                      profilePic={mentor.mentorDetail?.profilePic}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h2 className="font-medium text-lg truncate">
+                        {mentor.firstName} {mentor.lastName}
+                      </h2>
+                      <p className="text-sm text-gray-600 truncate">{mentor.emailId}</p>
                       <p className="text-sm text-gray-600">Phone: {mentor.phoneNo}</p>
 
-                  {!mentor.mentorDetail || mentor.mentorDetail.id === 0 ? (
-                    
-                    <p>He hasn't uploaded details</p>
-                  ) : (
-                    <>
-                      
-                      <p className="mt-2 text-sm">
-                        <strong>Age:</strong> {mentor.mentorDetail.age} <br />
-                        <strong>Experience:</strong> {mentor.mentorDetail.experience} yrs
-                      </p>
-                      <p className="text-sm">
-                        <strong>Qualification:</strong> {mentor.mentorDetail.qualification}
-                      </p>
-                      <p className="text-sm">
-                        <strong>Profession:</strong> {mentor.mentorDetail.profession}
-                      </p>
-                    </>
-                  )}
-              
-                  <div className="flex gap-2 mt-4 flex-wrap">
-                    <button
-                      className="bg-black border px-3 py-1 rounded text-white hover:bg-zinc-800 text-sm"
-                      onClick={() => handleDeleteMentor(mentor.id,mentor.mentorDetail?.profilePic)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+                      {!mentor.mentorDetail || mentor.mentorDetail.id === 0 ? (
+                        <p>He hasn't uploaded details</p>
+                      ) : (
+                        <>
+                          <p className="mt-2 text-sm">
+                            <strong>Age:</strong> {mentor.mentorDetail.age} <br />
+                            <strong>Experience:</strong> {mentor.mentorDetail.experience} yrs
+                          </p>
+                          <p className="text-sm">
+                            <strong>Qualification:</strong> {mentor.mentorDetail.qualification}
+                          </p>
+                          <p className="text-sm">
+                            <strong>Profession:</strong> {mentor.mentorDetail.profession}
+                          </p>
+                        </>
+                      )}
 
-          {view === 'enrollments' &&
-            enrollments.map((enrollment, index) => (
-              <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm">
-                <h1 className="font-medium text-base sm:text-lg truncate">
-                  Learner: {enrollment.learnerName}
-                </h1>
-                <p className="text-sm truncate">Mentor: {enrollment.mentorName}</p>
-                <p className="text-sm truncate">Course: {enrollment.courseName}</p>
-                <p className="text-sm truncate">Amount Paid: ₹{enrollment.amountPaid}</p>
-              </div>
-            ))}
-        </div>
+                      <div className="flex gap-2 mt-4 flex-wrap">
+                        <button
+                          className="bg-black border px-3 py-1 rounded text-white hover:bg-zinc-800 text-sm"
+                          onClick={() => handleDeleteMentor(mentor.id, mentor.mentorDetail?.profilePic)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )
+            )}
+
+            {view === 'enrollments' && (
+              isLoading ? (
+                <div>Fetching Enrollments...</div>
+              ) : (
+                enrollments.map((enrollment, index) => (
+                  <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm">
+                    <h1 className="font-medium text-base sm:text-lg truncate">
+                      Learner: {enrollment.learnerName}
+                    </h1>
+                    <p className="text-sm truncate">Mentor: {enrollment.mentorName}</p>
+                    <p className="text-sm truncate">Course: {enrollment.courseName}</p>
+                    <p className="text-sm truncate">Amount Paid: ₹{enrollment.amountPaid}</p>
+                  </div>
+                ))
+              )
+            )}
+          </div>
+
       </div>
 
       {showModal && <CreateCategory onClose={handleClose} onCategoryCreated={fetchCategories} />}

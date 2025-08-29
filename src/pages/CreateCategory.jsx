@@ -7,7 +7,7 @@ import api from '../api';
 const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
   const categoryId = id;
   const [formData, setFormData] = useState({ name: '', description: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false); // NEW
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const token = localStorage.getItem('token');
 
   const handleChange = (e) => {
@@ -19,7 +19,7 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isSubmitting) return; // Prevent double clicks
+    if (isSubmitting) return;
 
     if (!formData.name || !formData.description) {
       toast.info('Please fill in all fields');

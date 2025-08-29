@@ -22,7 +22,9 @@ const CourseDetails = () => {
   const [showTopicModal, setShowTopicModal] = useState(false);
   const [selectedSectionId, setSelectedSectionId] = useState(null);
   const [isEnrolled, setIsEnrolled] = useState(true);
-  const [isEnrolling, setIsEnrolling] = useState(false); // NEW
+  const [isEnrolling, setIsEnrolling] = useState(false);
+
+  console.log(courseDetails)
 
   const fetchCourseDetailsForLearner = async () => {
     try {
@@ -166,7 +168,10 @@ const CourseDetails = () => {
             {isEnrolling ? 'Enrolling...' : 'Enroll Now'}
           </button>
         ) : (
-          <div>Enrolled</div>
+          <div className='mt-6 flex justify-center w-[100px] py-2 rounded transition bg-gray-100 font-semibold text-green-800'>
+            Enrolled
+          </div>
+
         )}
 
         <div className="mt-10">
@@ -181,7 +186,7 @@ const CourseDetails = () => {
             </button>
           )}
 
-          {validSections?.length > 0 && (
+          {validSections?.length > 0 ? (
             <ul className="space-y-4">
               {validSections.map((section, index) => (
                 <li key={index} className="bg-gray-50 rounded-lg shadow-sm transition-all">
@@ -211,10 +216,10 @@ const CourseDetails = () => {
                         </button>
                       )}
 
-                      {section.courseSectionTopicDtos?.length > 0 && (
+                      {  section.courseSectionTopicDtos?.length > 0 ? (
                         <ul className="space-y-3 mt-4">
                           {section.courseSectionTopicDtos.map((topic, idx) => (
-                            <li key={idx} className="border-b pb-2">
+                            <li key={idx} className="border-b pb-2 transition-all">
                               <h4 className="font-semibold text-black-600">
                                 {topic.topicNo} {topic.name}
                               </h4>
@@ -227,12 +232,16 @@ const CourseDetails = () => {
                             </li>
                           ))}
                         </ul>
+                      ) : (
+                        <div>topics not yet added.</div>
                       )}
                     </div>
                   )}
                 </li>
               ))}
             </ul>
+          ): (
+            <div>sections not yet added.</div>
           )}
         </div>
       </div>

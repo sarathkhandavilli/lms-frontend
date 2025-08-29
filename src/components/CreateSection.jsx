@@ -26,6 +26,12 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
 
   const handleSubmit = async () => {
     if (isAdding) return; // Prevent double clicks
+
+    if (!sectionData.name || !sectionData.sectionNo || !sectionData.description) {
+      toast.info('Please fill all required fields!');
+      setIsAdding(false);
+      return;
+    }
     setIsAdding(true);
 
     const payload = {
