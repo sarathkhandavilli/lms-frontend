@@ -22,6 +22,7 @@ const LearnerDashboard = () => {
         `enrollment/fetch/learner-wise?learnerId=${learnerId}&userTimeZone=${userTimeZone}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      console.log(response.data.data)
       setCourses(response.data.data);
     } catch (error) {
       console.error(error);

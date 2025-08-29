@@ -21,7 +21,7 @@ const CourseDetails = () => {
   const [showSectionModal, setShowSectionModal] = useState(false);
   const [showTopicModal, setShowTopicModal] = useState(false);
   const [selectedSectionId, setSelectedSectionId] = useState(null);
-  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(true);
   const [isEnrolling, setIsEnrolling] = useState(false); // NEW
 
   const fetchCourseDetailsForLearner = async () => {
@@ -33,6 +33,7 @@ const CourseDetails = () => {
       setCourseDetails(response.data.data);
       setIsEnrolled(true);
     } catch (error) {
+      setIsEnrolled(false)
       if (error.response?.status === 404) setIsEnrolled(false);
     }
   };
@@ -136,7 +137,7 @@ const CourseDetails = () => {
           <p><span className="font-semibold">Prerequisite:</span> {courseDetails.prerequisite}</p>
         </div>
 
-        {!isEnrolled && (role === 'LEARNER' || !role) && (
+        { (!isEnrolled && (role === 'LEARNER' || !role)) ? (
           <button
             onClick={() => {
               if (!role) {
@@ -164,6 +165,8 @@ const CourseDetails = () => {
           >
             {isEnrolling ? 'Enrolling...' : 'Enroll Now'}
           </button>
+        ) : (
+          <div>Enrolled</div>
         )}
 
         <div className="mt-10">
