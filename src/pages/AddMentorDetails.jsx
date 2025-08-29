@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import api from '../api';
 
 const AddMentorDetails = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [mentorForm, setMentorForm] = useState({
     age: '',
     experience: '',
@@ -14,6 +15,7 @@ const AddMentorDetails = () => {
     profilePic: null,
   });
 
+  const [refreshDetails, setRefreshDetails] = useState(false);
   const [previewPic, setPreviewPic] = useState(null);
   const [mentorDetails, setMentorDetails] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -23,9 +25,11 @@ const AddMentorDetails = () => {
   const mentorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
 
-  //fetches mentordetails from mentor_detail
+  // Fetch mentor details
   useEffect(() => {
     const fetchMentorFullProfile = async () => {
+      setIsLoading(true); // Start loading
+
       try {
         const response = await api.get(
           `user/fetch/mentor-id?mentorId=${mentorId}`,
@@ -53,12 +57,15 @@ const AddMentorDetails = () => {
       } catch (err) {
         console.error('Mentor not found, show form');
         setShowForm(true);
+      } finally {
+        setIsLoading(false); // Stop loading
       }
     };
 
     fetchMentorFullProfile();
-  }, [mentorId, token, isSubmitting]);
+  }, [mentorId, token, refreshDetails]);
 
+  // Handle form input changes
   const handleMentorFormChange = (e) => {
     const { name, value, files } = e.target;
     if (files) {
@@ -76,6 +83,7 @@ const AddMentorDetails = () => {
     }
   };
 
+  // Handle form submission
   const handleMentorSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -89,18 +97,16 @@ const AddMentorDetails = () => {
     form.append('mentorId', mentorId);
 
     try {
-      const response = await api.post('/user/mentordetail/add',
-        form,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
+      await api.post('/user/mentordetail/add', form, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      toast.success('Mentor details submitted successfully!');
       setShowForm(false);
       setPreviewPic(null);
-      toast.success('Mentor details submitted successfully!');
+      setRefreshDetails((prev) => !prev);
     } catch (error) {
       console.error(error);
       toast.error('Error submitting mentor details');
@@ -115,6 +121,16 @@ const AddMentorDetails = () => {
     setIsUpdating(false);
   };
 
+  // 🟡 Loading State
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-black text-lg font-medium">Fetching mentor details...</p>
+      </div>
+    );
+  }
+
+  // ✅ Final Render
   return (
     <div className="flex justify-center items-center min-h-screen text-white px-4">
       {showForm ? (
@@ -196,7 +212,7 @@ const AddMentorDetails = () => {
               isSubmitting ? 'bg-gray-500 cursor-not-allowed' : 'bg-black hover:bg-gray-800'
             }`}
           >
-            {isSubmitting ? 'Submitting...' : 'Submit'}
+            {isSubmitting ? 'Updating...' : 'Submit'}
           </button>
         </form>
       ) : (
