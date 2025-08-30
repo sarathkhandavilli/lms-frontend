@@ -167,12 +167,12 @@ const CourseDetails = () => {
           >
             {isEnrolling ? 'Enrolling...' : 'Enroll Now'}
           </button>
-        ) : (
+        ) : (role !== 'MENTOR' && isEnrolled )? (
           <div className='mt-6 flex justify-center w-[100px] py-2 rounded transition bg-gray-100 font-semibold text-green-800'>
             Enrolled
           </div>
 
-        )}
+        ): null}
 
         <div className="mt-10">
           <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4">Sections</h2>
