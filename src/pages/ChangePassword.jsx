@@ -24,6 +24,7 @@ const ChangePassword = () => {
     password: '',
     repeatPassword: ''
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -46,6 +47,7 @@ const ChangePassword = () => {
     }
 
     try {
+
       const response = await api.post(
         `forgotpassword/changePassword/${email}`,
         passwords
@@ -56,6 +58,7 @@ const ChangePassword = () => {
         toast.success('Password changed successfully!');
         navigate('/login');
       }
+      
     } catch (err) {
       console.error(err);
       setError('Failed to change password. Please try again.');

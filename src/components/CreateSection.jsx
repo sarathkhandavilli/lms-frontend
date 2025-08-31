@@ -25,7 +25,7 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
   };
 
   const handleSubmit = async () => {
-    if (isAdding) return; // Prevent double clicks
+    if (isAdding) return;
 
     if (!sectionData.name || !sectionData.sectionNo || !sectionData.description) {
       toast.info('Please fill all required fields!');
@@ -65,7 +65,7 @@ const CreateSection = ({ courseId, onClose, onSectionCreated }) => {
           <h2 className="text-xl font-semibold">Add Section</h2>
           <button
             onClick={onClose}
-            disabled={isAdding} // Disable while adding
+            disabled={isAdding}
             className={`text-xl ${isAdding ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
             &times;

@@ -34,6 +34,7 @@ const AdminDashboard = () => {
     setShowUpdateModal(true);
   };
 
+  //deleting mentor with mentor id and mentorImage
   const handleDeleteMentor = async (mentorId,mentorImageName) => {
     if (!window.confirm('Are you sure you want to delete this mentor?')) return;
 
@@ -51,6 +52,7 @@ const AdminDashboard = () => {
     }
   };
 
+  //deleting category with category id
   const handleDeleteCategory = async (categoryId) => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
 
@@ -69,6 +71,7 @@ const AdminDashboard = () => {
     }
   };
 
+  //fetching all enrollments
   const showEnrollments = async () => {
     setView('enrollments');
     setIsLoading(true)
@@ -86,6 +89,7 @@ const AdminDashboard = () => {
     }
   };
 
+  //fetching users by role
   const fetchUsers = async (fetchRole) => {
     setView(fetchRole === 'LEARNER' ? 'learners' : 'mentors');
     setIsLoading(true)
@@ -108,6 +112,7 @@ const AdminDashboard = () => {
     }
   };
 
+  //fetching categories
   const fetchCategories = async () => {
     setView('categories');
     try {

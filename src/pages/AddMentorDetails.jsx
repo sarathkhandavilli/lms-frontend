@@ -25,10 +25,10 @@ const AddMentorDetails = () => {
   const mentorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
 
-  // Fetch mentor details
+  //fetching mentor details
   useEffect(() => {
     const fetchMentorFullProfile = async () => {
-      setIsLoading(true); // Start loading
+      setIsLoading(true);
 
       try {
         const response = await api.get(
@@ -58,14 +58,14 @@ const AddMentorDetails = () => {
         console.error('Mentor not found, show form');
         setShowForm(true);
       } finally {
-        setIsLoading(false); // Stop loading
+        setIsLoading(false);
       }
     };
 
     fetchMentorFullProfile();
   }, [mentorId, token, refreshDetails]);
 
-  // Handle form input changes
+  
   const handleMentorFormChange = (e) => {
     const { name, value, files } = e.target;
     if (files) {
@@ -83,7 +83,7 @@ const AddMentorDetails = () => {
     }
   };
 
-  // Handle form submission
+  
   const handleMentorSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -121,7 +121,6 @@ const AddMentorDetails = () => {
     setIsUpdating(false);
   };
 
-  // 🟡 Loading State
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -130,7 +129,6 @@ const AddMentorDetails = () => {
     );
   }
 
-  // ✅ Final Render
   return (
     <div className="flex justify-center items-center min-h-screen text-white px-4">
       {showForm ? (
@@ -176,7 +174,6 @@ const AddMentorDetails = () => {
             className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           />
 
-          {/* Styled Profile Pic Upload */}
           <div className="w-full">
             <label
               htmlFor="profilePic"
@@ -196,7 +193,6 @@ const AddMentorDetails = () => {
             />
           </div>
 
-          {/* Preview Image */}
           {previewPic && (
             <img
               src={previewPic}

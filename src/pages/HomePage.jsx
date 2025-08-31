@@ -23,13 +23,14 @@ const HomePage = () => {
     navigate(`/course/${id}`);
   };
 
+  //fetching all the courses
   const fetchAllcourses = async () => {
     try {
       const response = await api.get(
         'courses/fetch/status-wise?status=active'
       );
       setCourses(response.data.data);
-    } catch (error) {
+    } catch (error) {  
       console.log(error);
     }
   };
@@ -39,6 +40,8 @@ const HomePage = () => {
   }, []);
 
   useEffect(() => {
+
+    //fetching all the categories
     const fetchCategories = async () => {
       try {
         const response = await api.get(
@@ -53,6 +56,7 @@ const HomePage = () => {
     fetchCategories();
   }, []);
 
+  //fetching courses by name
   const searchByCourseName = async () => {
     const trimmedName = name.trim();
     if (trimmedName !== '') {
@@ -67,6 +71,7 @@ const HomePage = () => {
     }
   };
 
+  //fetching courses by category
   useEffect(() => {
     const fetchCategoryCourses = async () => {
       if (category !== 0) {

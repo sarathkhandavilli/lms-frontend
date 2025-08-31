@@ -26,7 +26,7 @@ const CreateTopic = ({ courseId, sectionId, onClose, onTopicCreated }) => {
   };
 
   const handleSubmit = async () => {
-    if (isAdding) return; // Prevent double submission
+    if (isAdding) return;
     setIsAdding(true);
 
     if (!topicData.name || !topicData.topicNo || !topicData.description || topicData.youtubeUrl) {

@@ -31,6 +31,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (e) => {
+
       // Close dropdown only if click is outside dropdownRef
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
@@ -49,8 +50,8 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [mobileMenuOpen]);
 
-  const toggleDropdown = () => setDropdownOpen((v) => !v);
-  const toggleMobileMenu = () => setMobileMenuOpen((v) => !v);
+  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+  const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -63,6 +64,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
+          
           {/* Left: logo + nav */}
           <div className="flex items-center space-x-6">
             <button

@@ -39,7 +39,7 @@ const CreateCourse = ({ onClose }) => {
   }, []);
 
   const handleSubmit = async () => {
-    if (isCreating) return; // Prevent double-click
+    if (isCreating) return; 
     setIsCreating(true);
 
     if (type !== 'FREE') {

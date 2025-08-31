@@ -52,7 +52,7 @@ const CourseDetails = () => {
   };
 
   const enrollLearner = async (courseId) => {
-    if (isEnrolling) return; // Prevent spam click
+    if (isEnrolling) return;
     setIsEnrolling(true);
 
     try {
@@ -246,7 +246,6 @@ const CourseDetails = () => {
         </div>
       </div>
 
-      {/* Modals */}
       {showSectionModal && (
         <CreateSection
           courseId={id}

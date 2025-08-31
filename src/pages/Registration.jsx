@@ -20,7 +20,7 @@ const Registration = () => {
     emailId: '',
     password: '',
     phoneNo: '',
-    role: role === 'ADMIN' ? 'ADMIN' : '', // Directly set role to ADMIN if the role is ADMIN
+    role: role === 'ADMIN' ? 'ADMIN' : '',
   });
 
   const handleChange = (e) => {
@@ -74,14 +74,12 @@ const Registration = () => {
             {role === 'ADMIN' ? 'Register Admin' : 'Sign Up'}
           </h2>
 
-          {/* Conditionally render the description */}
           {role !== 'ADMIN' && (
             <p className="text-gray-500 mb-6 text-sm">
               Create a new account to access our courses
             </p>
           )}
 
-          {/* Form fields */}
           {role !== 'ADMIN' ? (
             <div className="space-y-3">
               <input
@@ -139,7 +137,7 @@ const Registration = () => {
               </select>
             </div>
           ) : (
-            // If the role is ADMIN, don't show the role selection and directly send 'ADMIN'
+
             <div className='space-y-3'>
               <input
                 name="emailId"

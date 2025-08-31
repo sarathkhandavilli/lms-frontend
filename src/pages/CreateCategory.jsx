@@ -30,21 +30,23 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
 
     try {
       if (categoryId) {
-        // Update
+
         await api.put(
           'category/update',
           { id: parseInt(categoryId), ...formData },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success('Category updated successfully!');
+
       } else {
-        // Create
+
         await api.post(
           'category/add',
           formData,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success('Category created successfully!');
+        
       }
 
       if (onCategoryCreated) onCategoryCreated();

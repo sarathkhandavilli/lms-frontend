@@ -89,7 +89,6 @@ const OtpVerification = () => {
         >
           <h2 className="text-2xl font-semibold text-center">Verify OTP</h2>
 
-          {/* OTP input */}
           <div>
             <label htmlFor="otp" className="block text-sm font-medium mb-1">
               Enter OTP
@@ -105,10 +104,8 @@ const OtpVerification = () => {
             />
           </div>
 
-          {/* Error message */}
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-          {/* Submit button */}
           <button
             type="submit"
             disabled={isSubmitting}
@@ -116,6 +113,8 @@ const OtpVerification = () => {
           >
             {isSubmitting ? 'Verifying...' : 'Verify OTP'}
           </button>
+
+          
         </form>
       </div>
     </>
