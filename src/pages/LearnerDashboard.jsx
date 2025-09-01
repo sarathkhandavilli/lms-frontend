@@ -4,14 +4,15 @@ import Navbar from '../components/Navbar';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { handleTokenExpiration } from '../components/HandleTokenExpiration';
 import api from '../api';
-
 
 const LearnerDashboard = () => {
   const learnerId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
+  const [role,setRole] = useState('')
 
   let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -22,10 +23,15 @@ const LearnerDashboard = () => {
         `enrollment/fetch/learner-wise?learnerId=${learnerId}&userTimeZone=${userTimeZone}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      
       console.log(response.data.data)
       setCourses(response.data.data);
     } catch (error) {
-      console.error(error);
+    if (error.response && error.response.status === 401) {
+          toast.info('session expired please login again!')
+    }
+      handleTokenExpiration(error,navigate,setRole)
+      console.error("Error after handling token expiration" + error);
     }
   };
 

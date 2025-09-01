@@ -6,6 +6,7 @@ import CreateSection from '../components/CreateSection';
 import CreateTopic from '../components/CreateTopic';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { handleTokenExpiration } from '../components/HandleTokenExpiration';
 import api from '../api';
 
 const CourseDetails = () => {
@@ -35,6 +36,13 @@ const CourseDetails = () => {
       setCourseDetails(response.data.data);
       setIsEnrolled(true);
     } catch (error) {
+      if (role) {
+        if (error.response && error.response.status === 401) {
+                toast.info('session expired please login again!')
+          }
+      handleTokenExpiration(error,navigate)
+      }
+      
       setIsEnrolled(false)
       if (error.response?.status === 404) setIsEnrolled(false);
     }

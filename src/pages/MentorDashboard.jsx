@@ -6,12 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import CreateCourse from '../components/CreateCourse';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { handleTokenExpiration } from '../components/HandleTokenExpiration';
 import api from '../api';
 
 
 const MentorDashboard = () => {
   const mentorId = localStorage.getItem('userId');
   const token = localStorage.getItem('token');
+  const [isDashboard,setIsDashboard] = useState(false)
 
   const [mentorDashboard, setMentorDashboard] = useState({});
   const [mentorCourses, setMentorCourses] = useState([]);
@@ -52,8 +54,16 @@ const MentorDashboard = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      if (response.status === 200) {
+        setIsDashboard(true)
+        showMentorCourses();
+      }
       setMentorDashboard(response.data.data);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+                toast.info('session expired please login again!')
+          }
+      handleTokenExpiration(error,navigate)
       console.log(error);
     }
   };
@@ -71,6 +81,10 @@ const MentorDashboard = () => {
       console.log(response.data.data)
       setMentorCourses(response.data.data);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+                toast.info('session expired please login again!')
+          }
+      handleTokenExpiration(error,navigate)
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -87,11 +101,15 @@ const MentorDashboard = () => {
       const response = await api.get(
         `enrollment/fetch/mentor-wise?mentorId=${mentorId}&userTimeZone=${userTimeZone}`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }
       );
       setEnrollments(response.data.data);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+                toast.info('session expired please login again!')
+          }
+      handleTokenExpiration(error,navigate)
       console.log(error);
     } finally {
       setIsLoading(false)
@@ -101,9 +119,11 @@ const MentorDashboard = () => {
   useEffect(() => {
     if (mentorId) {
       fetchMentorDashboard();
-      showMentorCourses();
+      
     }
   }, [mentorId]);
+
+
 
   return (
     <>
@@ -158,7 +178,7 @@ const MentorDashboard = () => {
           <div className="flex gap-4 my-4">
             <button
               className={`border px-4 py-1 rounded-lg ${view === 'courses' ? 'bg-black text-white' : ''}`}
-              onClick={showMentorCourses}
+              onClick={isDashboard ? showMentorCourses : null}
             >
               My Courses
             </button>

@@ -6,6 +6,7 @@ import ProfileAvatar from '../components/ProfileAvatar';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { handleTokenExpiration } from '../components/HandleTokenExpiration';
 import api from '../api';
 
 
@@ -41,12 +42,16 @@ const AdminDashboard = () => {
     try {
       await api.delete(`user/mentor/delete?mentorId=${mentorId}&mentorImageName=${mentorImageName}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem('role')}`,
         },
       });
       toast.success('Mentor deleted successfully');
       fetchUsers('MENTOR');
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+                      toast.info('session expired please login again!')
+                }
+            handleTokenExpiration(error,navigate)
       console.error('Failed to delete mentor:', error);
       toast.error('Failed to delete mentor');
     }
@@ -60,7 +65,7 @@ const AdminDashboard = () => {
     try {
       await api.delete(`category/delete?categoryId=${categoryId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem('role')}`,
         },
       });
       toast.success('Category deleted successfully');
@@ -78,11 +83,15 @@ const AdminDashboard = () => {
     try {
       const response = await api.get(`enrollment/fetch/all`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem('role')}`,
         },
       });
       setEnrollments(response.data.data);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+                      toast.info('session expired please login again!')
+                }
+            handleTokenExpiration(error,navigate)
       console.log(error);
     } finally {
       setIsLoading(false)
@@ -97,7 +106,7 @@ const AdminDashboard = () => {
     try {
       const response = await api.get(`user/fetch/role-wise?role=${fetchRole}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${localStorage.getItem('role')}`,
         },
       });
 
@@ -106,6 +115,10 @@ const AdminDashboard = () => {
         : setMentors(response.data.data);
     } catch (error) {
       // toast.error(`Failed to fetch ${fetchRole}s`);
+      if (error.response && error.response.status === 401) {
+                toast.info('session expired please login again!')
+          }
+      handleTokenExpiration(error,navigate)
       console.log(error);
     } finally {
       setIsLoading(false)

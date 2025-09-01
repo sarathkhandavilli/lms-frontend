@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../api';
+import { handleTokenExpiration } from './HandleTokenExpiration';
 
 const CreateCourse = ({ onClose }) => {
   const navigate = useNavigate();
@@ -73,6 +74,10 @@ const CreateCourse = ({ onClose }) => {
       toast.success('Course created successfully!');
       navigate(`/course/${response.data.data.id}`);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+                toast.info('session expired please login again!')
+          }
+      handleTokenExpiration(error,navigate)
       console.error(error);
       toast.error('Failed to create course.');
     } finally {

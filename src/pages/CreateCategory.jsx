@@ -3,8 +3,13 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import api from '../api';
+import { handleTokenExpiration } from '../components/HandleTokenExpiration';
+import { useNavigate } from 'react-router-dom';
+
 
 const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
+
+  const navigate = useNavigate();
   const categoryId = id;
   const [formData, setFormData] = useState({ name: '', description: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,15 +51,19 @@ const CreateCategory = ({ id, onClose, onCategoryCreated }) => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         toast.success('Category created successfully!');
-        
+
       }
 
       if (onCategoryCreated) onCategoryCreated();
       if (onClose) onClose();
 
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+                toast.info('session expired please login again!')
+          }
+      handleTokenExpiration(error,navigate)
       console.error(error);
-      toast.error('Failed to save category');
+      toast.error('Failed to add category');
     } finally {
       setIsSubmitting(false);
     }
