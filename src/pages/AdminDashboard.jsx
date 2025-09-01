@@ -42,7 +42,7 @@ const AdminDashboard = () => {
     try {
       await api.delete(`user/mentor/delete?mentorId=${mentorId}&mentorImageName=${mentorImageName}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('role')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       toast.success('Mentor deleted successfully');
@@ -65,7 +65,7 @@ const AdminDashboard = () => {
     try {
       await api.delete(`category/delete?categoryId=${categoryId}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('role')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       toast.success('Category deleted successfully');
@@ -83,7 +83,7 @@ const AdminDashboard = () => {
     try {
       const response = await api.get(`enrollment/fetch/all`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('role')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
       setEnrollments(response.data.data);
@@ -106,7 +106,7 @@ const AdminDashboard = () => {
     try {
       const response = await api.get(`user/fetch/role-wise?role=${fetchRole}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('role')}`,
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
 
