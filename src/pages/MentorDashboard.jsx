@@ -17,6 +17,7 @@ const MentorDashboard = () => {
 
   const [mentorDashboard, setMentorDashboard] = useState({});
   const [mentorCourses, setMentorCourses] = useState([]);
+  const [mentorEnrollments, setMentorEnrollments] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
   const [view, setView] = useState('courses');
   const [showModal, setShowModal] = useState(false);
@@ -93,6 +94,33 @@ const MentorDashboard = () => {
 
   let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   console.log(userTimeZone)
+
+  const showEnrollmentsByMentor = async () => {
+    setView('mentorenrollments')
+    setIsLoading(true)
+    try {
+      const response = await api.get(
+        `enrollment/fetch/learner-wise?learnerId=${mentorId}&userTimeZone=${userTimeZone}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        }
+      );
+      console.log(response.data.data)
+      setMentorEnrollments(response.data.data);
+    } catch(error) {
+      if (error.response && error.response.status === 401) {
+                toast.info('session expired please login again!')
+          }
+      handleTokenExpiration(error,navigate)
+      console.log(error);
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleCourseClick = (courseId) => {
+    navigate(`/course/${courseId}`);
+  };
 
   const showEnrollmentsForMentor = async () => {
     setView('enrollments');
@@ -186,7 +214,14 @@ const MentorDashboard = () => {
               className={`border px-4 py-1 rounded-lg ${view === 'enrollments' ? 'bg-black text-white' : ''}`}
               onClick={showEnrollmentsForMentor}
             >
-              Enrollments
+              Course Enrollments
+            </button>
+
+            <button
+              className={`border px-4 py-1 rounded-lg ${view === 'mentorenrollments' ? 'bg-black text-white' : ''}`}
+              onClick={showEnrollmentsByMentor}
+            >
+              My Enrollments
             </button>
           </div>
 
@@ -219,10 +254,10 @@ const MentorDashboard = () => {
             {view === 'enrollments' && (
               
               isLoading ? (
-                <div>Fetching your enrollments...</div>
+                <div>Fetching course enrollments...</div>
               ) : (
                 <>
-                  <h3 className="font-bold mb-2">Enrollments</h3>
+                  <h3 className="font-bold mb-2">Course Enrollments</h3>
                   {enrollments.length === 0 ? (
                     <p>No enrollments found.</p>
                   ) : (
@@ -237,6 +272,47 @@ const MentorDashboard = () => {
                       ))}
                     </ul>
                   )}
+                </>
+              )
+            )}
+
+            {view === 'mentorenrollments' && (
+              
+              isLoading ? (
+                <div>Fetching your enrollments...</div>
+              ) : (
+                <>
+                <h3 className="font-bold mb-2">My Enrollments</h3>
+                {mentorEnrollments.length === 0 ? (
+                  <p>no courses enrolled</p>
+                ) : (
+
+                  <ul className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {mentorEnrollments.map( (enrollment,index) => (
+                    <li
+                      key={index}
+                      onClick={() => handleCourseClick(enrollment.courseId)}
+                      className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-1 transition duration-300 cursor-pointer"
+                    >
+                      <h3 className="text-lg font-semibold mb-2 text-black">
+                        {enrollment.courseName}
+                      </h3>
+                      <p className="text-sm text-gray-700">
+                        <strong>Amount Paid:</strong> ₹{enrollment.amountPaid}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <strong>Enrollment ID:</strong> {enrollment.enrollmentId}
+                      </p>
+                      <p className="text-sm text-gray-700">
+                        <strong>Enrollment Time:</strong>{' '}
+                        {enrollment.enrollmentTime}
+                      </p>
+                    </li>
+                  ))}
+                    </ul>
+                )}
+                  
+              
                 </>
               )
             )}

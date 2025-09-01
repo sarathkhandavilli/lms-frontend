@@ -74,6 +74,7 @@ const CourseDetails = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success('Enrolled successfully!');
+      fetchCourseDetailsForLearner();
       setIsEnrolled(true);
     } catch (err) {
       toast.error('Enrollment failed');
@@ -147,7 +148,7 @@ const CourseDetails = () => {
           <p><span className="font-semibold">Prerequisite:</span> {courseDetails.prerequisite}</p>
         </div>
 
-        { (!isEnrolled && (role === 'LEARNER' || !role)) ? (
+        { (!isEnrolled && (role === 'LEARNER' || role === 'MENTOR' || !role)) ? (
           <button
             onClick={() => {
               if (!role) {
@@ -175,7 +176,7 @@ const CourseDetails = () => {
           >
             {isEnrolling ? 'Enrolling...' : 'Enroll Now'}
           </button>
-        ) : (role !== 'MENTOR' && isEnrolled )? (
+        ) : (role !== 'ADMIN' && isEnrolled )? (
           <div className='mt-6 flex justify-center w-[100px] py-2 rounded transition bg-gray-100 font-semibold text-green-800'>
             Enrolled
           </div>

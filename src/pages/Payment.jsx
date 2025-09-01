@@ -8,6 +8,7 @@ import api from '../api';
 const Payment = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const role = localStorage.getItem('role')
 
   const token = localStorage.getItem('token');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -40,7 +41,11 @@ const Payment = () => {
         }
       });
       toast.success("Payment & Enrollment Successful");
-      navigate('/learner');
+      if (role === 'MENTOR') {
+        navigate('/mentor')
+      } else {
+        navigate('/learner');
+      }
     } catch (err) {
       console.error(err);
       toast.error("Payment failed");
