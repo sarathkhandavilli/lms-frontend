@@ -29,7 +29,7 @@ const CreateTopic = ({ courseId, sectionId, onClose, onTopicCreated }) => {
     if (isAdding) return;
     setIsAdding(true);
 
-    if (!topicData.name || !topicData.topicNo || !topicData.description || topicData.youtubeUrl) {
+    if (!topicData.name || !topicData.topicNo || !topicData.description || !topicData.youtubeUrl) {
       toast.info('please fill all required fields!')
       setIsAdding(false);
       return ;

@@ -16,6 +16,7 @@ const HomePage = () => {
   const [category, setCategory] = useState(0);
   const [isLoading,setIsLoading] = useState(false);
 
+
   const assignCategory = (id) => {
     setCategory(id);
   };

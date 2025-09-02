@@ -25,6 +25,19 @@ const MentorDashboard = () => {
 
   const navigate = useNavigate();
 
+
+  
+  // useEffect( () => {
+  //   try {
+  //     const response =  api.get(`user/checkUserStatus?status=INACTIVE&mentorId=${mentorId}`,{
+  //       headers: {Authorization: `Bearer ${token}`}
+  //     })
+  //     console.log(response)
+  //   } catch(error) {
+  //     console.log(error)
+  //   }
+  // },[])
+
   const updateCourse = (id) => {
     navigate(`/course/${id}`);
   };
@@ -57,7 +70,6 @@ const MentorDashboard = () => {
       );
       if (response.status === 200) {
         setIsDashboard(true)
-        showMentorCourses();
       }
       setMentorDashboard(response.data.data);
     } catch (error) {
@@ -133,6 +145,7 @@ const MentorDashboard = () => {
         }
       );
       setEnrollments(response.data.data);
+      fetchMentorDashboard();
     } catch (error) {
       if (error.response && error.response.status === 401) {
                 toast.info('session expired please login again!')
@@ -147,6 +160,7 @@ const MentorDashboard = () => {
   useEffect(() => {
     if (mentorId) {
       fetchMentorDashboard();
+      showMentorCourses();
       
     }
   }, [mentorId]);

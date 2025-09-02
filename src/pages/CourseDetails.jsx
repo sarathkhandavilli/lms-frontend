@@ -59,7 +59,7 @@ const CourseDetails = () => {
     }
   };
 
-  const enrollLearner = async (courseId) => {
+  const enrollLearner = async (courseId,mentorId) => {
     if (isEnrolling) return;
     setIsEnrolling(true);
 
@@ -67,6 +67,7 @@ const CourseDetails = () => {
       const data = {
         courseId,
         learnerId: parseInt(userId),
+        mentorId: mentorId,
         type: courseDetails.type,
         amount: 0,
       };
@@ -166,7 +167,8 @@ const CourseDetails = () => {
                   },
                 });
               } else {
-                enrollLearner(courseDetails.courseId);
+                console.log(courseDetails.mentorId)
+                enrollLearner(courseDetails.courseId,courseDetails.mentorId);
               }
             }}
             disabled={isEnrolling}
