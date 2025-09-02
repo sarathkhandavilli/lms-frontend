@@ -13,12 +13,14 @@ const LearnerDashboard = () => {
   const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
   const [role,setRole] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
 
   let userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 
   const fetchMyCourses = async () => {
     try {
+      setIsLoading(true)
       const response = await api.get(
         `enrollment/fetch/learner-wise?learnerId=${learnerId}&userTimeZone=${userTimeZone}`,
         { headers: { Authorization: `Bearer ${token}` } }
@@ -32,6 +34,8 @@ const LearnerDashboard = () => {
     }
       handleTokenExpiration(error,navigate,setRole)
       console.error("Error after handling token expiration" + error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -52,9 +56,9 @@ const LearnerDashboard = () => {
           My Enrolled Courses
         </h2>
 
-        {courses.length === 0 ? (
+        {courses.length === 0 && !isLoading ? (
           <p className="text-center text-gray-600">No courses enrolled yet.</p>
-        ) : (
+        ) : isLoading ? (<div className='text-center text-gray-600'> Fetching your courses... </div>) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
             {courses.map((enrollment, index) => (
               <div

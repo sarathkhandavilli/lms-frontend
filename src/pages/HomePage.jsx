@@ -14,6 +14,7 @@ const HomePage = () => {
   const [categories, setCategories] = useState([]);
   const [name, setName] = useState('');
   const [category, setCategory] = useState(0);
+  const [isLoading,setIsLoading] = useState(false);
 
   const assignCategory = (id) => {
     setCategory(id);
@@ -26,12 +27,15 @@ const HomePage = () => {
   //fetching all the courses
   const fetchAllcourses = async () => {
     try {
+      setIsLoading(true)
       const response = await api.get(
         'courses/fetch/status-wise?status=active'
       );
       setCourses(response.data.data);
     } catch (error) {  
       console.log(error);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -76,6 +80,7 @@ const HomePage = () => {
     const fetchCategoryCourses = async () => {
       if (category !== 0) {
         try {
+          setIsLoading(true)
           const response = await api.get(
             `courses/fetch/category-wise?categoryId=${category}&status=ACTIVE`
           );
@@ -84,6 +89,8 @@ const HomePage = () => {
         } catch (error) {
           setCourses([]);
           console.log(error);
+        } finally {
+          setIsLoading(false)
         }
       } else {
         fetchAllcourses();
@@ -149,13 +156,17 @@ const HomePage = () => {
       {/* Course List */}
       <div className="px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {courses.length === 0 ? (
+          {courses.length === 0 && !isLoading ? (
             <div className="col-span-full text-center py-6">
               <p className="text-xl font-semibold text-gray-500">
                 No courses present in this category. Please try another category or search for courses.
               </p>
             </div>
-          ) : (
+          ) : isLoading ? (<div className="col-span-full text-center py-6">
+              <p className="text-xl font-semibold text-gray-500">
+                Fetching courses...
+              </p>
+            </div>) : (
             courses.map((course) => (
               <CourseCard
                 key={course.id}

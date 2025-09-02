@@ -86,6 +86,7 @@ const AdminDashboard = () => {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       });
+      console.log(response.data.data)
       setEnrollments(response.data.data);
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -296,7 +297,7 @@ const AdminDashboard = () => {
                 enrollments.map((enrollment, index) => (
                   <div key={index} className="border p-4 bg-gray-100 rounded shadow-sm">
                     <h1 className="font-medium text-base sm:text-lg truncate">
-                      Learner: {enrollment.learnerName}
+                      {enrollment.role === 'MENTOR' ? 'Mentor: ' : 'Learner: '} {enrollment.learnerName}
                     </h1>
                     <p className="text-sm truncate">Mentor: {enrollment.mentorName}</p>
                     <p className="text-sm truncate">Course: {enrollment.courseName}</p>
