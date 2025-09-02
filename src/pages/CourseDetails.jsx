@@ -176,7 +176,7 @@ const CourseDetails = () => {
           >
             {isEnrolling ? 'Enrolling...' : 'Enroll Now'}
           </button>
-        ) : (role !== 'ADMIN' && isEnrolled )? (
+        ) : (role !== 'ADMIN' && isEnrolled && parseInt(localStorage.getItem('userId')) !== courseDetails.mentorId)? (
           <div className='mt-6 flex justify-center w-[100px] py-2 rounded transition bg-gray-100 font-semibold text-green-800'>
             Enrolled
           </div>
