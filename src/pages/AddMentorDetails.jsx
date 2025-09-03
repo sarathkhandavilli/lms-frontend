@@ -107,7 +107,7 @@ const AddMentorDetails = () => {
       setShowForm(false);
       setPreviewPic(null);
       setRefreshDetails((prev) => !prev);
-    } catch (error) {
+    } catch (error) { 
       console.error(error);
       toast.error('Error submitting mentor details');
     } finally {

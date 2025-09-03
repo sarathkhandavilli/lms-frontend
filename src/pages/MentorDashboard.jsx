@@ -22,21 +22,48 @@ const MentorDashboard = () => {
   const [view, setView] = useState('courses');
   const [showModal, setShowModal] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
+  const [userDetails,setUserDetails] = useState({});
+  const [mentorToken, setMentorToken] = useState('');
+  const UserId = localStorage.getItem('userId');
 
   const navigate = useNavigate();
 
 
   
-  // useEffect( () => {
-  //   try {
-  //     const response =  api.get(`user/checkUserStatus?status=INACTIVE&mentorId=${mentorId}`,{
-  //       headers: {Authorization: `Bearer ${token}`}
-  //     })
-  //     console.log(response)
-  //   } catch(error) {
-  //     console.log(error)
-  //   }
-  // },[])
+  useEffect( () => {
+
+    const fetchUserDetails = async () => {
+
+      setMentorToken(localStorage.getItem('token'))
+      console.log(token)
+      try {
+        const response =  await api.get(
+            `user/checkUserStatus?status=INACTIVE&mentorId=${UserId}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          console.log("data "+ response.data)
+        setUserDetails(response.data);
+      } catch(error) {
+        console.log(error)
+      }
+      
+    }
+    fetchUserDetails();
+    
+})
+
+
+
+  if (userDetails === 'INACTIVE') {
+    toast.info("your account was deactivated! please contact admin")
+    localStorage.clear();
+                navigate('/');
+  } else {
+    console.log(userDetails)
+  }
 
   const updateCourse = (id) => {
     navigate(`/course/${id}`);
@@ -61,6 +88,8 @@ const MentorDashboard = () => {
   };
 
   const fetchMentorDashboard = async () => {
+
+
     try {
       const response = await api.get(
         `courses/mentor/dashboard?mentorId=${mentorId}`,
