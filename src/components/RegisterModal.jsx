@@ -195,7 +195,7 @@ const RegisterModal = ({ onClose, LoginModal }) => {
 
         {/* Google Section */}
         <div className="flex flex-col space-y-1">
-          <label className="text-xs font-medium text-gray-700">
+          {/* <label className="text-xs font-medium text-gray-700">
             {googleRole === "" ? "Please Select Role to continue" : ""}
           </label>
           <select
@@ -206,22 +206,15 @@ const RegisterModal = ({ onClose, LoginModal }) => {
             <option value="">Select Role</option>
             <option value="LEARNER">LEARNER</option>
             <option value="MENTOR">MENTOR</option>
-          </select>
+          </select> */}
+          <h2 className="flex justify-center text-sm text-gray-700">You will be registered as Learner.</h2>
 
           <a
-            href={
-              googleRole
-                ? `http://localhost:8080/oauth2/authorization/google?role=${googleRole}`
-                : "#"
-            }
+            href='http://localhost:8080/oauth2/authorization/google?role'
             className={`w-full flex items-center justify-center gap-2 rounded-md py-2 text-xs font-medium transition ${
-              googleRole
-                ? "bg-gray-200 hover:bg-gray-300 text-gray-700 cursor-pointer"
-                : "bg-gray-100 text-gray-400 cursor-not-allowed"
+              "bg-gray-200 hover:bg-gray-300 text-gray-700 cursor-pointer"
             }`}
-            onClick={(e) => {
-              if (!googleRole) e.preventDefault();
-            }}
+           
           >
             <img src={googleImage} alt="Google" className="w-5 h-5" />
             Continue with Google

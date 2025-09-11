@@ -8,6 +8,9 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { handleTokenExpiration } from '../components/HandleTokenExpiration';
 import api from '../api';
+import LoginModal from '../components/LoginModal'
+import RegisterModal from '../components/RegisterModal'
+
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -16,6 +19,10 @@ const CourseDetails = () => {
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
   const userId = localStorage.getItem('userId');
+
+  // Modal states
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   const [courseDetails, setCourseDetails] = useState(null);
   const [expandedSection, setExpandedSection] = useState(null);
@@ -118,7 +125,32 @@ const CourseDetails = () => {
 
   return (
     <>
-      <Navbar />
+      {/* Pass modal control functions to Navbar */}
+      <Navbar 
+        openLoginModal={() => setShowLoginModal(true)} 
+      />
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <LoginModal 
+          onClose={() => setShowLoginModal(false)} 
+          RegisterModal={() => {
+            setShowLoginModal(false);
+            setShowRegisterModal(true);
+          }}
+        />
+      )}
+
+      {/* Register Modal */}
+      {showRegisterModal && (
+        <RegisterModal
+          onClose={() => setShowRegisterModal(false)}
+          LoginModal={() => {
+            setShowRegisterModal(false);
+            setShowLoginModal(true);
+          }}
+        />
+      )}
 
       <div className="max-w-5xl mx-auto px-6 py-10 bg-white shadow-xl rounded-lg -mt-6 mb-10">
         <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">

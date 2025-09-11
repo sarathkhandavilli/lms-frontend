@@ -91,6 +91,28 @@ const HomePage = () => {
         openLoginModal={() => setShowLoginModal(true)} 
       />
 
+      {/* Login Modal */}
+      {showLoginModal && (
+        <LoginModal 
+          onClose={() => setShowLoginModal(false)} 
+          RegisterModal={() => {
+            setShowLoginModal(false);
+            setShowRegisterModal(true);
+          }}
+        />
+      )}
+
+      {/* Register Modal */}
+      {showRegisterModal && (
+        <RegisterModal
+          onClose={() => setShowRegisterModal(false)}
+          LoginModal={() => {
+            setShowRegisterModal(false);
+            setShowLoginModal(true);
+          }}
+        />
+      )}
+
       {/* Page Header */}
       <div className="text-center mt-4">
         <h1 className="text-3xl font-bold text-black">Explore Our Courses</h1>
@@ -161,27 +183,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Login Modal */}
-      {showLoginModal && (
-        <LoginModal 
-          onClose={() => setShowLoginModal(false)} 
-          RegisterModal={() => {
-            setShowLoginModal(false);
-            setShowRegisterModal(true);
-          }}
-        />
-      )}
-
-      {/* Register Modal */}
-      {showRegisterModal && (
-        <RegisterModal
-          onClose={() => setShowRegisterModal(false)}
-          LoginModal={() => {
-            setShowRegisterModal(false);
-            setShowLoginModal(true);
-          }}
-        />
-      )}
+      
     </>
   );
 };
