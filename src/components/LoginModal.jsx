@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import api from "../api";
 
 const LoginModal = ({ onClose, RegisterModal }) => {
+
   const [form, setForm] = useState({ email: "", password: "" });
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -30,11 +31,11 @@ const LoginModal = ({ onClose, RegisterModal }) => {
       toast.success(`✅ Welcome back, ${firstName || "Admin"}!`);
 
       if (role === "MENTOR") {
-        window.location.href = "/mentor"; // Navigate to mentor page
+        window.location.href = "/mentor";
       } else if (role === "ADMIN") {
-        window.location.href = "/admin"; // Navigate to admin page
+        window.location.href = "/admin";
       } else if (role === "LEARNER") {
-        window.location.href = "/learner"; // Navigate to learner page
+        window.location.href = "/learner";
       }
     } catch (error) {
       const status = error.response?.status;
@@ -82,7 +83,7 @@ const LoginModal = ({ onClose, RegisterModal }) => {
 
         {/* Google button */}
         <a
-          href="http://localhost:8080/oauth2/authorization/google"
+          href="https://lms-backend-cr9o.onrender.com/oauth2/authorization/google"
           className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 transition"
         >
           <img src={googleImage} alt="Google" className="w-5 h-5" />

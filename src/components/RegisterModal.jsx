@@ -210,7 +210,7 @@ const RegisterModal = ({ onClose, LoginModal }) => {
           <h2 className="flex justify-center text-sm text-gray-700">You will be registered as Learner.</h2>
 
           <a
-            href='http://localhost:8080/oauth2/authorization/google?role'
+            href='https://lms-backend-cr9o.onrender.com/oauth2/authorization/google?role'
             className={`w-full flex items-center justify-center gap-2 rounded-md py-2 text-xs font-medium transition ${
               "bg-gray-200 hover:bg-gray-300 text-gray-700 cursor-pointer"
             }`}
