@@ -2,10 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import ProfileAvatar from './ProfileAvatar';
-import 'react-toastify/dist/ReactToastify.css';
+import LoginModal from './LoginModal';
+import RegisterModal from './RegisterModal';
 
-
-const Navbar = () => {
+const Navbar = ({openLoginModal}) => {
   const navigate = useNavigate();
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -17,6 +17,16 @@ const Navbar = () => {
   const [lastName, setLastName] = useState('');
   const [mentorImage, setMentorImage] = useState('');
 
+  const [isSSO, setShowSSO] = useState(false);
+  
+  useEffect(() => {
+  if (isSSO) {
+    navigate('/', { state: { isSSO: true } });
+  }
+}, [isSSO, navigate]);
+
+
+  // Load user info from localStorage
   useEffect(() => {
     const storedRole = localStorage.getItem('role') || '';
     const fName = localStorage.getItem('firstName') || '';
@@ -29,14 +39,12 @@ const Navbar = () => {
     setMentorImage(profileImage);
   }, []);
 
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-
-      // Close dropdown only if click is outside dropdownRef
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
       }
-      // Close mobile menu only if click is outside mobileMenuRef and hamburger button
       if (
         mobileMenuOpen &&
         mobileMenuRef.current &&
@@ -64,7 +72,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          
+
           {/* Left: logo + nav */}
           <div className="flex items-center space-x-6">
             <button
@@ -106,7 +114,6 @@ const Navbar = () => {
               className="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-900"
               aria-label="Toggle menu"
             >
-              {/* Hamburger icon */}
               <svg
                 className="h-6 w-6 text-gray-900"
                 xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +151,7 @@ const Navbar = () => {
                     lastName={lastName}
                     profilePic={mentorImage}
                   />
-                 <div className="hidden md:block text-left">
+                  <div className="hidden md:block text-left">
                     {firstName === '' && lastName === '' ? (
                       <p className="text-sm font-medium">Admin</p>
                     ) : (
@@ -167,11 +174,10 @@ const Navbar = () => {
                         Mentor Details
                       </button>
                     )}
-
                     {role === 'ADMIN' && (
                       <button
                         onClick={() => {
-                          setMobileMenuOpen(false);
+                          setDropdownOpen(false);
                           navigate('/register');
                         }}
                         className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
@@ -179,7 +185,6 @@ const Navbar = () => {
                         Register Admin
                       </button>
                     )}
-
                     <button
                       onClick={handleLogout}
                       className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
@@ -190,20 +195,12 @@ const Navbar = () => {
                 )}
               </div>
             ) : (
-              <>
-                <button
-                  onClick={() => navigate('/register')}
-                  className="hidden md:inline-block px-4 py-2 text-sm font-medium border rounded-lg hover:bg-gray-50 transition"
-                >
-                  Register
-                </button>
-                <button
-                  onClick={() => navigate('/login')}
-                  className="hidden md:inline-block px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition"
-                >
-                  Login
-                </button>
-              </>
+              <button
+                onClick={openLoginModal}
+                className="hidden md:inline-block px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition"
+              >
+                Login
+              </button>
             )}
           </div>
         </div>
@@ -225,7 +222,6 @@ const Navbar = () => {
             >
               Courses
             </button>
-
             {role && (
               <button
                 onClick={() => {
@@ -239,68 +235,57 @@ const Navbar = () => {
                 Dashboard
               </button>
             )}
-
-            {role ? (
-              <>
-                {role === 'MENTOR' && (
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      navigate('/mentor/detail');
-                    }}
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-                  >
-                    Mentor Details
-                  </button>
-                )}
-
-                {role === 'ADMIN' && (
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      navigate('/register');
-                    }}
-                    className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-                  >
-                    Register Admin
-                  </button>
-                )}
-                
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    handleLogout();
-                  }}
-                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    navigate('/register');
-                  }}
-                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-                >
-                  Register
-                </button>
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    navigate('/login');
-                  }}
-                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-                >
-                  Login
-                </button>
-              </>
+            {role && role === 'MENTOR' && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate('/mentor/detail');
+                }}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                Mentor Details
+              </button>
+            )}
+            {role && role === 'ADMIN' && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate('/register');
+                }}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                Register Admin
+              </button>
+            )}
+            {!role && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  openLoginModal();
+                }}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                Login
+              </button>
+            )}
+            {role && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+              >
+                Logout
+              </button>
             )}
           </div>
         </nav>
       )}
+
+
+
+      
     </header>
   );
 };

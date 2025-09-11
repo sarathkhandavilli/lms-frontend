@@ -18,6 +18,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
 import ScrollToTop from './components/ScrollToTop';
+import RedirectHandler from './pages/RedirectHandler';
 
 const App = () => {
 
@@ -34,6 +35,7 @@ const App = () => {
         <Route path='/forgot-password' element={ <EmailVerification />  } />
         <Route path='/verify-otp' element={ <OtpVerification />  } />
         <Route path='/change-password' element={ <ChangePassword />  } />
+        <Route path='/redirect' element={<RedirectHandler />} />
 
 
         <Route
