@@ -65,7 +65,6 @@ const Navbar = ({openLoginModal}) => {
     localStorage.clear();
     setRole('');
     navigate('/', { replace: true });
-    window.location.reload();
   };
 
   return (

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api";
+import { BASE_URL } from "../api";
 import googleImage from "../assets/gbg.png";
 import microsoftImage from "../assets/microsoft.png";
 
@@ -201,7 +202,7 @@ const RegisterModal = ({ onClose, LoginModal }) => {
 
           {/* Google */}
           <a
-            href="https://lms-backend-cr9o.onrender.com/oauth2/authorization/google?role"
+            href={`${BASE_URL}/oauth2/authorization/google`}
             className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 text-sm transition"
           >
             <img src={googleImage} alt="Google" className="w-5 h-5" />
@@ -210,7 +211,7 @@ const RegisterModal = ({ onClose, LoginModal }) => {
 
           {/* Microsoft */}
           <a
-            href="https://lms-backend-cr9o.onrender.com/oauth2/authorization/microsoft?role"
+            href={`${BASE_URL}/oauth2/authorization/google?role=LEARNER`}
             className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 text-sm transition"
           >
             <img src={microsoftImage} alt="Microsoft" className="w-6 h-4" />
