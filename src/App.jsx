@@ -19,6 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Analytics } from "@vercel/analytics/react"
 import ScrollToTop from './components/ScrollToTop';
 import RedirectHandler from './pages/RedirectHandler';
+import DeleteData from './pages/DeleteData';
 
 const App = () => {
 
@@ -28,6 +29,7 @@ const App = () => {
       <ScrollToTop />
       <Routes>
 
+        <Route path='/delete-data' element={ <DeleteData />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/course/:id" element={<CourseDetails />} />
         <Route path="/register" element={<Registration />} />

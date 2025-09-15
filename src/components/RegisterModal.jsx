@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../api";
 import googleImage from "../assets/gbg.png";
+import microsoftImage from "../assets/microsoft.png";
 
 const RegisterModal = ({ onClose, LoginModal }) => {
   const navigate = useNavigate();
 
-  const [googleRole, setGoogleRole] = useState("");
   const [isSendingOtp, setIsSendingOtp] = useState(false);
 
   // State for form data
@@ -68,12 +68,12 @@ const RegisterModal = ({ onClose, LoginModal }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-opacity-60 backdrop-blur-md flex justify-center items-center z-50">
-      <div className="bg-white border rounded-md flex flex-col p-4 w-80 shadow-lg">
+      <div className="bg-white border rounded-lg flex flex-col p-5 w-96 shadow-xl">
         {/* Header */}
-        <div className="flex justify-between items-center mb-1">
-          <h1 className="text-base font-semibold text-gray-700">Create Account</h1>
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-lg font-semibold text-gray-700">Create Account</h1>
           <button
-            className="text-gray-500 text-lg hover:cursor-pointer hover:text-gray-800 transition"
+            className="text-gray-500 text-xl hover:cursor-pointer hover:text-gray-800 transition"
             onClick={onClose}
           >
             &times;
@@ -178,7 +178,7 @@ const RegisterModal = ({ onClose, LoginModal }) => {
           <button
             type="submit"
             disabled={isSendingOtp}
-            className={`w-full bg-black hover:bg-zinc-800 text-white text-xs font-medium rounded-md py-1 mt-2 transition ${
+            className={`w-full bg-black hover:bg-zinc-800 text-white text-xs font-medium rounded-md py-2 mt-3 transition ${
               isSendingOtp ? "cursor-not-allowed opacity-60" : ""
             }`}
           >
@@ -187,37 +187,34 @@ const RegisterModal = ({ onClose, LoginModal }) => {
         </form>
 
         {/* Divider */}
-        <div className="flex items-center my-2">
+        <div className="flex items-center my-3">
           <div className="flex-grow border-gray-300 border-t"></div>
           <span className="mx-2 text-gray-500 text-xs">or</span>
           <div className="flex-grow border-gray-300 border-t"></div>
         </div>
 
-        {/* Google Section */}
-        <div className="flex flex-col space-y-1">
-          {/* <label className="text-xs font-medium text-gray-700">
-            {googleRole === "" ? "Please Select Role to continue" : ""}
-          </label>
-          <select
-            value={googleRole}
-            onChange={(e) => setGoogleRole(e.target.value)}
-            className="border border-gray-300 rounded-md px-2 py-1 text-xs focus:outline-none"
-          >
-            <option value="">Select Role</option>
-            <option value="LEARNER">LEARNER</option>
-            <option value="MENTOR">MENTOR</option>
-          </select> */}
-          <h2 className="flex justify-center text-sm text-gray-700">You will be registered as Learner.</h2>
+        {/* Social Buttons */}
+        <div className="flex flex-col space-y-2">
+          <h2 className="flex justify-center text-sm text-gray-700 mb-1">
+            You will be registered as Learner.
+          </h2>
 
+          {/* Google */}
           <a
-            href='https://lms-backend-cr9o.onrender.com/oauth2/authorization/google?role'
-            className={`w-full flex items-center justify-center gap-2 rounded-md py-2 text-xs font-medium transition ${
-              "bg-gray-200 hover:bg-gray-300 text-gray-700 cursor-pointer"
-            }`}
-           
+            href="http://localhost:8080/oauth2/authorization/google?role"
+            className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 text-sm transition"
           >
             <img src={googleImage} alt="Google" className="w-5 h-5" />
             Continue with Google
+          </a>
+
+          {/* Microsoft */}
+          <a
+            href="http://localhost:8080/oauth2/authorization/microsoft?role"
+            className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 text-sm transition"
+          >
+            <img src={microsoftImage} alt="Microsoft" className="w-6 h-4" />
+            Continue with Microsoft
           </a>
         </div>
       </div>
