@@ -201,7 +201,7 @@ const RegisterModal = ({ onClose, LoginModal }) => {
 
           {/* Google */}
           <a
-            href="http://localhost:8080/oauth2/authorization/google?role"
+            href="https://lms-backend-cr9o.onrender.com/oauth2/authorization/google?role"
             className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 text-sm transition"
           >
             <img src={googleImage} alt="Google" className="w-5 h-5" />
@@ -210,7 +210,7 @@ const RegisterModal = ({ onClose, LoginModal }) => {
 
           {/* Microsoft */}
           <a
-            href="http://localhost:8080/oauth2/authorization/microsoft?role"
+            href="https://lms-backend-cr9o.onrender.com/oauth2/authorization/microsoft?role"
             className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 text-sm transition"
           >
             <img src={microsoftImage} alt="Microsoft" className="w-6 h-4" />

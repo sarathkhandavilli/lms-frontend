@@ -85,7 +85,7 @@ const LoginModal = ({ onClose, RegisterModal }) => {
         <div className="flex flex-col space-y-2">
           {/* Google */}
           <a
-            href="http://localhost:8080/oauth2/authorization/google"
+            href="https://lms-backend-cr9o.onrender.com/oauth2/authorization/google"
             className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 text-sm transition"
           >
             <img src={googleImage} alt="Google" className="w-5 h-5" />
@@ -94,7 +94,7 @@ const LoginModal = ({ onClose, RegisterModal }) => {
 
           {/* Microsoft */}
           <a
-            href="http://localhost:8080/oauth2/authorization/microsoft"
+            href="https://lms-backend-cr9o.onrender.com/oauth2/authorization/microsoft"
             className="w-full flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md py-2 text-sm transition"
           >
             <img src={microsoftImage} alt="Microsoft" className="w-6 h-4" />
